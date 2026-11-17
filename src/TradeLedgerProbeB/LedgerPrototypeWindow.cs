@@ -333,7 +333,7 @@ namespace TradeLedgerProbeB
         }
         public void Stop()
         { try { if (Lease != null) Lease.CloseTop(); } catch (Exception e) { Log("LedgerViewError", "close=" + e.GetType().Name); } windowSwitch.Cancel();FinishClose("shutdown"); ReleasePointer(); if(ManualStore!=null)ManualStore.ObservationCommitted-=ProductionCommitted; if(NativeBookmarks!=null)NativeBookmarks.Stop(); Destroy(gameObject); }
-        private void LateUpdate() { try{if(Lease!=null){Lease.Conceal();if(!failed)SyncPointer();}}catch(Exception e){if(!failed)Fail(e);} }
+        private void LateUpdate() { try{PollPlaceMoves();if(Lease!=null){Lease.Conceal();if(!failed)SyncPointer();}}catch(Exception e){if(!failed)Fail(e);} }
         private void LostFocus(string source)
         {
             menuEntry.Hide();menuEntry.Clicked=false;

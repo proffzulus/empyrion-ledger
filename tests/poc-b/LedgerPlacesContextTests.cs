@@ -97,6 +97,42 @@ namespace BOfflineTests {internal static class LedgerPlacesContextTests {
   ok(row.Record.Organization==LedgerObjectOrganization.Favorites,"cursor fallback Favorite changes one row");
   ok(picks.Move(browser.Rows,LedgerObjectOrganization.Favorites,keyA).Length==0,"already-in-target cursor action is a no-op");
   row.Record.Organization=before;ok(browser.Query(before).Contains(row),"cursor fallback Undo restores original membership");
+  var asyncRows=browser.Rows.Take(2).ToArray();var hide=asyncRows.Select(r=>LedgerDiscoveredObjects.Organize(r.Record,LedgerObjectOrganization.Hidden)).ToArray();var original=asyncRows.Select(r=>LedgerDiscoveredObjects.Organize(r.Record,r.Record.Organization)).ToArray();
+  string asyncWorld=hide[0].World;var owner=new object();var work=new LedgerPlaceMoveWork();var op=work.Begin(asyncWorld,1002,hide,original,false,"physical-save",owner);
+  ok(op!=null&&work.Busy,"accepted action locks before a possible immediate worker acknowledgement");LedgerPlaceMoveOperation ack;
+  ok(!work.Take(out ack)&&work.Busy,"pending save cannot prematurely unlock");
+  ok(work.Begin(asyncWorld,1002,hide,original)==null,"one write in flight, repeated click cannot duplicate it");
+  work.Complete(op,null);ok(work.Busy,"worker acknowledgement alone never mutates Unity UI state");
+  ok(work.Take(out ack)&&!work.Busy&&ack.Error==null&&ack.Values.Length==2,"Unity UI pump consumes exact two-place success even with no API Poll");
+  work.Complete(op,"late duplicate failure");ok(!work.Take(out ack)&&!work.Busy,"repeated acknowledgement cannot re-lock or overwrite committed success");
+  var stale=work.Begin(asyncWorld,1002,hide,original);work.Reset();var currentMove=work.Begin(asyncWorld,1002,hide,original);
+  work.Complete(stale,null);ok(work.Busy&&!work.Take(out ack),"old scope callback cannot unlock replacement action");
+  work.Complete(currentMove,"fixture-error");ok(work.Take(out ack)&&!work.Busy&&ack.Error=="fixture-error","failure definitively releases exact current action");
+  work.Complete(null,null);ok(!work.Busy,"missing callback token is harmless");
+  ok(op.Current(asyncWorld,1002,"physical-save",owner)&&!op.Current(asyncWorld,1002,"other-save",owner)&&!op.Current(asyncWorld,1002,"physical-save",new object()),"physical save and store lifetime fence same-world callback");
+  ok(!op.Current("foreign-world",1002,"physical-save",owner)&&!op.Current(asyncWorld,1003,"physical-save",owner),"wrong world/player acknowledgement cannot apply");
+  var queueRejection=work.Begin(asyncWorld,1002,hide,original);work.Complete(queueRejection,"queue-rejected");ok(work.Take(out ack)&&ack.Error=="queue-rejected"&&!work.Busy,"queue rejection is explicit failure, no optimistic saved state");
+  ok(work.Begin(asyncWorld,1003,hide,original)==null&&work.Begin(asyncWorld,1002,new[]{hide[0],hide[0]},new[]{original[0],original[0]})==null,"invalid player and duplicate members fail before queue");
+  int empty=0;for(int repeat=0;repeat<1000;repeat++)if(work.Take(out ack))empty++;ok(empty==0&&!work.Busy,"empty UI completion pump is bounded and does no projection or storage work");
+  string asyncFolder=Path.Combine(root,"places-async-ack");Directory.CreateDirectory(asyncFolder);int callbacks=0;
+  Func<LedgerViewData> reload=()=>LedgerViewData.Read(Path.Combine(asyncFolder,LedgerDatabase.FileName),asyncWorld,null,1002);
+  using(var signal=new System.Threading.ManualResetEventSlim())using(var store=new LedgerStore(asyncFolder)){
+   var write=work.Begin(asyncWorld,1002,hide,original);ok(store.EnqueueObjectDispositions(write.Values,error=>{work.Complete(write,error);System.Threading.Interlocked.Increment(ref callbacks);signal.Set();}),"real worker accepts two-place action");
+   ok(signal.Wait(5000)&&store.WaitForIdle(5000)&&work.Busy,"committed real worker waits for UI acknowledgement, not game API update");
+   ok(reload().PlaceBrowser.Query(LedgerObjectOrganization.Hidden).Count==2,"both places persist even before UI consumes callback (former stuck state)");
+   ok(work.Take(out ack)&&ack.Error==null&&!work.Busy,"UI pump recovers input after published two-place commit");
+   signal.Reset();var undo=work.Begin(asyncWorld,1002,original,hide,true);ok(store.EnqueueObjectDispositions(undo.Values,error=>{work.Complete(undo,error);System.Threading.Interlocked.Increment(ref callbacks);signal.Set();})&&signal.Wait(5000),"Undo follows same acknowledged worker path");
+   ok(work.Take(out ack)&&ack.Undo&&ack.Error==null&&!work.Busy&&reload().PlaceBrowser.Query(LedgerObjectOrganization.Unsorted).Count==2,"Undo durably restores both exact prior lists");
+  }
+  using(var signal=new System.Threading.ManualResetEventSlim())using(var store=new LedgerStore(asyncFolder,null,stage=>{if(stage=="object-disposition-before-commit")throw new IOException("fixture two-place rollback");})){
+   var write=work.Begin(asyncWorld,1002,hide,original);ok(store.EnqueueObjectDispositions(write.Values,error=>{work.Complete(write,error);System.Threading.Interlocked.Increment(ref callbacks);signal.Set();})&&signal.Wait(5000),"failed real transaction sends acknowledgement");
+   ok(work.Take(out ack)&&ack.Error!=null&&!work.Busy&&reload().PlaceBrowser.Query(LedgerObjectOrganization.Unsorted).Count==2,"failure unlocks with error, preserves both prior records and retry inputs");
+  }
+  using(var signal=new System.Threading.ManualResetEventSlim())using(var store=new LedgerStore(asyncFolder)){
+   var write=work.Begin(asyncWorld,1002,hide,original);ok(store.EnqueueObjectDispositions(write.Values,error=>{work.Complete(write,error);System.Threading.Interlocked.Increment(ref callbacks);signal.Set();})&&signal.Wait(5000),"recovered worker accepts retry after rollback");
+   ok(work.Take(out ack)&&ack.Error==null&&!work.Busy&&reload().PlaceBrowser.Query(LedgerObjectOrganization.Hidden).Count==2,"retry settles both records without lost data or stuck state");
+  }
+  ok(callbacks==4,"Hide, Undo, rollback, retry each acknowledge exactly once");
   const string native="native exact observed PF 5D4B;system5D49/sector5D4A;fixture";
   Func<string,LedgerGeography> geo=sectorText=>new LedgerGeography{Source=native,SystemCoordinates="0,0,0",SectorCoordinates=sectorText};
   var current=LedgerContext.Create(Path.Combine(root,"distance-refresh"),"Home","Observed star","SinglePlayer");
@@ -119,7 +155,11 @@ namespace BOfflineTests {internal static class LedgerPlacesContextTests {
   ok(!source("LedgerLocationWindow.cs").Contains("playerPoint.Geography=null")&&source("LedgerLocationWindow.cs").Contains("LedgerDistanceRefresh.Replace"),"actual snapshot publication uses atomic refresh instead of artificial Unknown frame");
   ok(ui.Contains("placeSelection.Activate(key,checkboxPressed,rowPressed)")&&ui.Contains("SelectRow(new Rect(r.x,r.y,32,r.height),selected)")&&ui.Contains("r.x+32,r.y,r.width-32,r.height),placeFocus==key")&&ui.Contains("Event.current.type==EventType.Repaint)GUI.skin.toggle.Draw")&&!ui.Contains("GUI.Toggle("),"full checkbox cell consumes one gesture; row body only focuses; checkbox paint has no input handler");
   ok(ui.Contains("placeSelection.Move(placeRows,LedgerPlaceContext.HideTarget(placeList),placeFocus)")&&ui.Contains("placeSelection.Move(placeRows,LedgerPlaceContext.FavoriteTarget(placeList),placeFocus)")&&ui.Contains("checkedOnly||cursorVisible"),"both enabled actions share checked-first/cursor-fallback routing");
-  ok(ui.Contains("checkedOnly?placeSelection.Selected.Count+")&&ui.Contains("Cursor row")&&ui.Contains("No target"),"action target mode remains visible even with operation status");
+  ok(!ui.Contains("Cursor row")&&!ui.Contains("No target")&&!ui.Contains('"'+" checked"+'"')&&!ui.Contains('"'+" row"+'"')&&ui.Contains("placeMessage??"),"plain action labels and useful status only, no target-mode filler");
+  ok(source("LedgerPrototypeWindow.cs").Contains("LateUpdate() { try{PollPlaceMoves();")&&ui.Contains("placeMoves.Complete(result,error)")&&ui.Contains("placeMoves.Take(out result)"),"actual Unity UI pump settles worker ack independently from API Update");
+  ok(ui.Contains("PlaceSaveScope,ManualStore")&&ui.Contains("placeMoves.Reset()")&&!ui.Contains("placeMoving=false"),"generation/store/save fences replace uncorrelated busy flag");
+  ok(ui.Contains("Couldn't confirm list changes. Refresh, then try again.")&&source("LedgerStore.cs").Contains("store-closed-before-ack;refresh-before-retry"),"failed/terminal writes have actionable error and completion path");
+  ok(!source("LedgerRequestBrowserWindow.cs").Contains("RequestInventoryCoverage")&&source("LedgerRequestBrowserWindow.cs").Contains("float offset=32+"),"Requests removes source mechanics caption and recovers vertical space");
   ok(source("LedgerPrototypeWindow.cs").Contains("Event.current.Use();return true;"),"row hit helper consumes left mouse-down before drawing controls");
   ok(LedgerPlaceBrowserLayout.MarketRow==32&&panel.Contains("placePanelOffers.Count,LedgerPlaceBrowserLayout.MarketRow")&&!panel.Contains("LedgerFreshness.Badge("),"contextual Market removes redundant badge and halves virtual row height");
   ok(panel.Contains("OfferBackdrop(r,offer.Market)")&&panel.Contains("LedgerFreshness.Hint(offer.Market")&&panel.Contains("r.Contains(Event.current.mousePosition)"),"freshness background and full-row hover retained");
@@ -135,8 +175,7 @@ namespace BOfflineTests {internal static class LedgerPlacesContextTests {
   float x=16+bounds.Nav+12;g.DrawString("Locations",bold,Brushes.White,20,96);g.DrawString("All places\n  Deltalan\n    Deltalan IV group\n      Moon A\n      Moon B",font,Brushes.LightGray,new RectangleF(20,132,bounds.Nav-20,250));
   for(int i=0;i<3;i++)button(x+i*112,96,106,new[]{"Favorites","Unsorted","Hidden"}[i],i==1);button(x+342,96,bounds.Main-414,"Search discovered places",false);button(x+bounds.Main-66,96,66,"Reset",false);
   float fw=Math.Max(140,bounds.Main-450);button(x,130,fw,"All factions  \u25BE",false);Color[] colors={Color.White,Color.Red,Color.Orange,Color.Yellow,Color.LimeGreen,Color.Gray,Color.SlateGray};for(int i=0;i<7;i++){float px=x+fw+10+i*28;button(px,130,26,i==0?"*":i==6?"/":"",i==2);if(i>0&&i<6)using(var brush=new SolidBrush(colors[i]))g.FillEllipse(brush,px+9,140,8,8);}g.DrawString("Traders",small,Brushes.White,x+fw+214,136);for(int i=0;i<4;i++)button(x+fw+274+i*28,130,26,new[]{"*","+","-","?"}[i],i==0);
-  button(x,164,100,"Select all",false);button(x+106,164,62,"Clear",false);button(x+176,164,112,"Hide checked",false);button(x+296,164,112,"Favorite",false);button(x+416,164,64,"Undo",false);button(x+bounds.Main-80,164,80,"Visit",false);
-  g.DrawString("2 checked",small,Brushes.LightBlue,x+490,171);
+  button(x,164,100,"Select all",false);button(x+106,164,62,"Clear",false);button(x+176,164,112,"Hide",false);button(x+296,164,112,"Favorite",false);button(x+416,164,64,"Undo",false);button(x+bounds.Main-80,164,80,"Visit",false);
   g.DrawString("Place                         Distance  Max traders",small,Brushes.LightBlue,x+32,204);for(int i=0;i<18;i++){float y=232+i*48;if(y>l.Height-35)break;if(i==2)g.FillRectangle(Brushes.DarkSlateGray,x+32,y,bounds.List-32,48);g.DrawRectangle(Pens.SlateGray,x+5,y+14,18,18);if(i<2){g.DrawLine(Pens.Cyan,x+8,y+23,x+12,y+28);g.DrawLine(Pens.Cyan,x+12,y+28,x+21,y+17);}g.DrawString(i==0?"Bank of Farr B":"Colony "+(char)('A'+i%4),bold,Brushes.LightCyan,x+38,y+1);g.DrawString("Moon A | Observed faction",small,Brushes.Gray,x+38,y+26);g.FillEllipse(Brushes.Orange,x+bounds.List-197,y+19,8,8);g.DrawString("1.6 km     5",small,Brushes.White,x+bounds.List-163,y+10);}g.FillRectangle(Brushes.SteelBlue,x+bounds.List-12,234,10,bounds.Height-40);g.FillRectangle(Brushes.LightBlue,x+bounds.List-12,250,10,70);
   float dx=x+bounds.List+12,dw=bounds.Detail;g.DrawRectangle(Pens.SteelBlue,dx,200,dw,bounds.Height);g.DrawString("Colony C",bold,Brushes.Gold,dx+8,210);for(int i=0;i<3;i++)button(dx+8+i*(dw-16)/3,244,(dw-16)/3-4,new[]{"Overview","Market","Requests"}[i],i==tab);button(dx+8,278,(dw-16)*.48f,tab==2?"Full Requests":"Full Market",false);button(dx+8+(dw-16)*.5f,278,(dw-16)*.5f,"Compare \u25BE",false);
   if(tab==0)g.DrawString("Deltalan I / Deltalan\n\nBrotherhood of Farr\n\nUp to 5 traders\n\n2 observed traders\n\n1 pending / 0 done / 3 conversations",font,Brushes.White,new RectangleF(dx+8,320,dw-32,400));

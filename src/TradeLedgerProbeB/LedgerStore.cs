@@ -93,7 +93,7 @@ namespace TradeLedgerProbeB
                 queue.Enqueue(new Pending{ObjectDispositions=values,Done=done,Estimate=(int)estimate});queuedBytes+=(int)estimate;status.Queued++;wake.Set();return true;}
         }
         private static void Complete(Pending p,string error)
-        {if(p.Done!=null)try{p.Done(error);}catch(Exception){/* UI notification cannot abort durable capture. */}}
+        {var done=Interlocked.Exchange(ref p.Done,null);if(done!=null)try{done(error);}catch(Exception){/* UI notification cannot abort durable capture. */}}
         private static int Estimate(LedgerObservation o)
         {
             if (o == null || o.Context == null || !o.Context.Recordable || o.Identity == null || string.IsNullOrEmpty(o.ObservationId)) return -1;
@@ -211,12 +211,19 @@ namespace TradeLedgerProbeB
             }
             finally
             {
-                if (database != null)
+                try{if(database!=null)database.Dispose();}
+                finally
                 {
-                    database.Dispose();
+                    try{if(portable!=null)portable.Dispose();}
+                    finally
+                    {
+                        Pending[] unfinished;
+                        lock(gate){if(status.State!="blocked")status.State=queue.Count==0?"closed":"closed-with-unwritten-queue";unfinished=queue.ToArray();}
+                        // Preserve queued work/status/recovery evidence. A terminal worker cannot
+                        // promise publication, but must release waiting UI with an honest error.
+                        foreach(var item in unfinished)Complete(item,"store-closed-before-ack;refresh-before-retry");
+                    }
                 }
-                if(portable!=null)portable.Dispose();
-                lock (gate) if (status.State != "blocked") status.State = queue.Count == 0 ? "closed" : "closed-with-unwritten-queue";
             }
         }
         public void Dispose()

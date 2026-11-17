@@ -65,7 +65,7 @@ namespace TradeLedgerProbeB
                         try{if(fallback!=null)log = LedgerDiagnostics.Open(fallback, session);else Announce("Diagnostic log unavailable; Ledger remains available.");}
                         catch(Exception fallbackError){Announce("Diagnostic log unavailable: "+fallbackError.GetType().Name+"; Ledger remains available.");}
                     }
-                    Write("Init", "TradeLedger=0.3.12 target=1.20.1/5232 dumpFormat=prefixed-flat-JSON-in-same-log");
+                    Write("Init", "TradeLedger=1.0.0 target=1.20.1/5232 dumpFormat=prefixed-flat-JSON-in-same-log");
                     Write("LogSelected", "location=" + Compact.Text(log == null ? null : log.Path, 800) +
                         " selection=" + selection + " sessionLimit=2097152 folderLimit=16777216 fileLimit=8 threshold=" + diagnostics.Minimum + " legacyEvidencePreserved=true");
                     Write("BuildFingerprint", "id=" + ProbeBuild.Fingerprint + " expectedModApi=" + ProbeBuild.ModApiHash +

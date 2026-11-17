@@ -133,6 +133,32 @@ namespace TradeLedgerProbeB
         public LedgerObjectDisposition[] Move(IEnumerable<LedgerPlaceRow> visible,LedgerObjectOrganization next,string cursor=null)
         {bool checkedOnly=Selected.Count>0;return visible.Where(r=>(checkedOnly?Selected.Contains(r.Record.Key):r.Record.Key==cursor)&&r.Record.Organization!=next).Select(r=>LedgerDiscoveredObjects.Organize(r.Record,next)).ToArray();}
     }
+    // Worker callbacks only acknowledge. The Unity UI pump applies one exact current operation.
+    // Reset detaches a prior scope; a delayed/duplicate callback can never unlock a newer action.
+    public sealed class LedgerPlaceMoveOperation
+    {
+        public readonly string World,SaveScope;public readonly int Player;public readonly object Owner;public readonly LedgerObjectDisposition[] Values,Prior;public readonly bool Undo;
+        internal bool Completed;internal string Failure;
+        internal LedgerPlaceMoveOperation(string world,int player,LedgerObjectDisposition[] values,LedgerObjectDisposition[] prior,bool undo,string saveScope,object owner)
+        {World=world;SaveScope=saveScope;Owner=owner;Player=player;Values=(LedgerObjectDisposition[])values.Clone();Prior=(LedgerObjectDisposition[])prior.Clone();Undo=undo;}
+        public string Error {get{return Failure;}}
+        public bool Current(string world,int? player,string saveScope=null,object owner=null){return World==world&&Player==player&&SaveScope==saveScope&&ReferenceEquals(Owner,owner);}
+    }
+    public sealed class LedgerPlaceMoveWork
+    {
+        private readonly object gate=new object();private LedgerPlaceMoveOperation active;
+        public bool Busy {get{lock(gate)return active!=null;}}
+        public LedgerPlaceMoveOperation Begin(string world,int player,LedgerObjectDisposition[] values,LedgerObjectDisposition[] prior,bool undo=false,string saveScope=null,object owner=null)
+        {lock(gate){if(active!=null||string.IsNullOrEmpty(world)||player<=0||values==null||prior==null||values.Length==0||values.Length!=prior.Length)return null;
+            for(int i=0;i<values.Length;i++)if(values[i]==null||prior[i]==null||!values[i].Valid()||!prior[i].Valid()||values[i].World!=world||prior[i].World!=world||values[i].Player!=player||prior[i].Player!=player||values[i].Key!=prior[i].Key)return null;
+            if(values.Select(v=>v.Key).Distinct().Count()!=values.Length)return null;
+            return active=new LedgerPlaceMoveOperation(world,player,values,prior,undo,saveScope,owner);}}
+        public void Complete(LedgerPlaceMoveOperation value,string error)
+        {lock(gate){if(value==null||!ReferenceEquals(active,value)||value.Completed)return;value.Failure=error;value.Completed=true;}}
+        public bool Take(out LedgerPlaceMoveOperation value)
+        {lock(gate){value=null;if(active==null||!active.Completed)return false;value=active;active=null;return true;}}
+        public void Reset(){lock(gate)active=null;}
+    }
     public sealed class LedgerPlaceBrowserLayout
     {
         public float Nav,Main,List,Detail,Height;public const int Row=48,MarketRow=32;

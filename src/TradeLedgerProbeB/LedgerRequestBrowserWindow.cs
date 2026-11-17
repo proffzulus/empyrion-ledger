@@ -70,8 +70,8 @@ namespace TradeLedgerProbeB
             }
             var allRows=requestLayout.Rows;var rowHeights=requestLayout.RowHeights;var heights=requestLayout.Heights;var titles=requestLayout.Titles;var bodies=requestLayout.Bodies;total=requestLayout.Total;
             string stateError=manualError??(mode>=2&&!data.ArchiveStateReady?"Conversation state unavailable. Refresh to retry.":null);
-            float offset=(mode>=2?32:62)+(stateError==null?0:28);
-            if(mode<2)GUI.Label(new Rect(c.x,c.y+32,c.width,24),new GUIContent(RequestInventoryCoverage,RequestInventoryDiagnostics));if(stateError!=null)Label(new Rect(c.x,c.y+offset-28,c.width,26),stateError);
+            float offset=32+(stateError==null?0:28);
+            if(stateError!=null)Label(new Rect(c.x,c.y+offset-28,c.width,26),stateError);
             Rect port=new Rect(c.x,c.y+offset,c.width,c.height-offset);GUI.enabled=enabled&&requestPopup==0;
             requestsScroll.y=Math.Max(0,Math.Min(requestsScroll.y,Math.Max(0,total-port.height)));
             requestsScroll=GUI.BeginScrollView(port,requestsScroll,new Rect(0,0,width,Math.Max(34,total)),false,true);

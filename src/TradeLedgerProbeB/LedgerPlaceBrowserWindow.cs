@@ -35,12 +35,12 @@ namespace TradeLedgerProbeB
         private List<LedgerPlaceRow> placeRows=new List<LedgerPlaceRow>();private LedgerPlaceBrowser placeProjection;
         private readonly HashSet<string> placeVisibleKeys=new HashSet<string>();
         private string[] placeFactions;private volatile bool placeDirty;private long placeLoadedAt;
-        private LedgerObjectDisposition[] placeUndo;private bool placeMoving;
-        private sealed class PlaceMoveResult {public string World,Error;public int Player;public LedgerObjectDisposition[] Values,Prior;public bool Undo;}
-        private readonly Queue<PlaceMoveResult> placeMoveResults=new Queue<PlaceMoveResult>();
+        private LedgerObjectDisposition[] placeUndo;private readonly LedgerPlaceMoveWork placeMoves=new LedgerPlaceMoveWork();
+        private bool placeMoving {get{return placeMoves.Busy;}}
+        private string PlaceSaveScope {get{return currentContext==null?null:currentContext.LocalSaveKey??currentContext.SavePath;}}
         private static readonly LedgerObjectOrganization[] placeLists={LedgerObjectOrganization.Favorites,LedgerObjectOrganization.Unsorted,LedgerObjectOrganization.Hidden};
         private static readonly string[] placeListNames={"Favorites","Unsorted","Hidden"};
-        private void ResetPlaceBrowser(){placeRelation=null;placeTraders=LedgerPlaceTraderFilter.Any;placeScope="all";placeSearch="";placeFaction=placeFocus=placeSignature=placeFilterSignature=null;placeUndo=null;placeMoving=false;placeMessage=null;placeProjection=null;placeCollapsed.Clear();placeSelection.Selected.Clear();placeRows.Clear();}
+        private void ResetPlaceBrowser(){placeRelation=null;placeTraders=LedgerPlaceTraderFilter.Any;placeScope="all";placeSearch="";placeFaction=placeFocus=placeSignature=placeFilterSignature=null;placeUndo=null;placeMoves.Reset();placeMessage=null;placeProjection=null;placeCollapsed.Clear();placeSelection.Selected.Clear();placeRows.Clear();}
         private bool PlaceButton(Rect r,string value,bool active=false){ControlFrame(r,GUI.enabled&&(active||r.Contains(Event.current.mousePosition)));bool click=GUI.Button(new Rect(r.x+1,r.y+1,r.width-2,r.height-2),value);if(active){Color old=GUI.color;GUI.color=new Color(.35f,.9f,1f);GUI.DrawTexture(new Rect(r.x+3,r.yMax-3,r.width-6,2),Texture2D.whiteTexture);GUI.color=old;}return click;}
         private void PlaceOverflow(Rect r,string value,GUIStyle style){if(r.Contains(Event.current.mousePosition)&&style.CalcSize(new GUIContent(LedgerPresentation.ItemRich(value))).x>r.width)iconHoverName=value;}
         private void MovePlaces(LedgerObjectDisposition[] values,bool undo=false)
@@ -49,18 +49,24 @@ namespace TradeLedgerProbeB
             values=values.Where(v=>data.PlaceBrowser.Find(v.Key)==null||data.PlaceBrowser.Find(v.Key).Record.Organization!=v.Value).ToArray();if(values.Length==0)return;
             var prior=values.Select(v=>data.PlaceBrowser.Find(v.Key)).Where(r=>r!=null).Select(r=>LedgerDiscoveredObjects.Organize(r.Record,r.Record.Organization)).ToArray();
             if(prior.Length!=values.Length){placeMessage="Selection changed. Select again.";return;}
-            var result=new PlaceMoveResult{World=world,Player=data.ManualPlayerId??0,Values=values,Prior=prior,Undo=undo};
-            if(ManualStore==null||!ManualStore.EnqueueObjectDispositions(values,error=>{result.Error=error;lock(resultGate)placeMoveResults.Enqueue(result);}))
-            {placeMessage="Move not queued. Try a smaller selection or refresh.";return;}
-            placeMoving=true;manualRevision++;placeMessage="Saving list changes...";
+            var result=placeMoves.Begin(world,data.ManualPlayerId??0,values,prior,undo,PlaceSaveScope,ManualStore);if(result==null)return;
+            manualRevision++;placeMessage="Saving list changes...";
+            if(ManualStore==null||!ManualStore.EnqueueObjectDispositions(result.Values,error=>placeMoves.Complete(result,error)))
+                placeMoves.Complete(result,"queue-rejected");
         }
         private void PollPlaceMoves()
         {
-            lock(resultGate)while(placeMoveResults.Count>0){var result=placeMoveResults.Dequeue();if(result.World!=world||result.Player!=manualPlayer)continue;
-                placeMoving=false;manualRevision++;if(result.Error!=null){placeMessage="List changes weren't saved. Refresh and retry.";continue;}
+            LedgerPlaceMoveOperation result;if(!placeMoves.Take(out result))return;
+            manualRevision++;
+            if(!result.Current(world,manualPlayer,PlaceSaveScope,ManualStore)){placeMessage=null;return;}
+            if(result.Error!=null){placeMessage="Couldn't confirm list changes. Refresh, then try again.";Log("LedgerPlaceListSaveError",result.Error);return;}
+            // A background read may have replaced the projection while the transaction published.
+            // Never apply to another world/player; a later matching read already contains the commit.
+            if(LedgerPlaceBrowser.Current(data,world,manualPlayer))
                 foreach(var v in result.Values){var r=data.PlaceBrowser.Find(v.Key);if(r!=null)r.Record.Organization=v.Value;}
-                placeUndo=result.Undo?null:result.Prior;placeSelection.Selected.Clear();placeSignature=null;placeMessage=result.Undo?"List changes undone.":result.Values.Length+" place(s) moved.";
-            }
+            placeUndo=result.Undo?null:result.Prior;placeSelection.Selected.Clear();placeSignature=null;
+            placeMessage=result.Undo?"List changes undone.":result.Values.Length+" place(s) moved.";
+            Log("LedgerPlaceListSaved","count="+result.Values.Length+" undo="+result.Undo+" committed-and-published=true");
         }
         private void OpenPlaceMarkets(LedgerPlaceRow target)
         {RememberPage();locationPicker=new LedgerScopePicker(LedgerScopeKind.Poi){Key=target.LocationKey};locationSearch="";locationCacheKey=null;locationBuyScroll=locationSellScroll=Vector2.zero;view=2;}
@@ -97,11 +103,11 @@ namespace TradeLedgerProbeB
             if(PlaceButton(new Rect(c.x+106,c.y+68,62,27),"Clear"))placeSelection.Selected.Clear();
             bool checkedOnly=placeSelection.Selected.Count>0;bool cursorVisible=placeFocus!=null&&placeVisibleKeys.Contains(placeFocus);
             GUI.enabled=enabled&&!placeMoving&&(checkedOnly||cursorVisible);
-            if(PlaceButton(new Rect(c.x+176,c.y+68,112,27),(placeList==LedgerObjectOrganization.Hidden?"Unhide":"Hide")+(checkedOnly?" checked":" row")))MovePlaces(placeSelection.Move(placeRows,LedgerPlaceContext.HideTarget(placeList),placeFocus));
+            if(PlaceButton(new Rect(c.x+176,c.y+68,112,27),placeList==LedgerObjectOrganization.Hidden?"Unhide":"Hide"))MovePlaces(placeSelection.Move(placeRows,LedgerPlaceContext.HideTarget(placeList),placeFocus));
             if(PlaceButton(new Rect(c.x+296,c.y+68,112,27),placeList==LedgerObjectOrganization.Favorites?"Unfavorite":"Favorite"))MovePlaces(placeSelection.Move(placeRows,LedgerPlaceContext.FavoriteTarget(placeList),placeFocus));
             GUI.enabled=enabled&&!placeMoving&&placeUndo!=null;
             if(PlaceButton(new Rect(c.x+416,c.y+68,64,27),"Undo"))MovePlaces(placeUndo,true);
-            GUI.enabled=enabled;Label(new Rect(c.x+490,c.y+68,c.width-580,27),(checkedOnly?placeSelection.Selected.Count+" checked":cursorVisible?"Cursor row":"No target")+(placeMessage==null?"":" | "+placeMessage));
+            GUI.enabled=enabled;Label(new Rect(c.x+490,c.y+68,c.width-580,27),placeMessage??"");
             var visit=placeProjection.Find(placeFocus);if(visit!=null&&!placeVisibleKeys.Contains(visit.Record.Key))visit=null;LedgerBookmarkPlan visitPlan=null;string visitReason="Select a place";
             bool canVisit=visit!=null&&LedgerBookmarkPolicy.TryPlace(data,visit.Record,currentContext,out visitPlan,out visitReason);
             DrawRowBookmark(new Rect(c.xMax-80,c.y+68,80,27),visitPlan,canVisit,visitReason,"Visit");
