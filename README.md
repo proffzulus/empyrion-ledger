@@ -50,7 +50,7 @@ Save-local journal records remain in Mods/TradeLedger/TradeLedger.sqlite inside
 the current save. See [manual instructions](docs/release/README.md).
 Developer deployment scripts remain in source, outside the user ZIP.
 Do not enable both public and legacy ProbeB loaders.
-There is no Nexus download link yet.
+Download the mod from [Nexus Mods](https://www.nexusmods.com/empyriongalacticsurvival/mods/199).
 
 Open/close with **`]` (RightBracket)**; Escape / Close dismiss. The native Escape-menu
 **Trade Ledger** entry has a guarded deferred handoff; its actual visibility/click still

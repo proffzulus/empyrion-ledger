@@ -8,7 +8,7 @@ Client-side personal memory for Empyrion and Reforged Eden 2: actually observed 
 
 The native profile targets **Empyrion 1.20.1 build 5232**, Windows client, RE2 Build 46, single player. This public-name package has native-contract and offline regression coverage, not a new live-game acceptance run. This is the known reference image, not a universal build-number allowlist. Later build labels and moved metadata tokens are accepted when the feature contracts still match. Unique method renames in a proven owner require unchanged ABI and full IL/operand/local/exception behavior. Renamed owners/fields, ambiguous matches or changed semantics disable the affected capability; new obfuscation schemes may still require an update. Core API/Unity/SQLite and private-library integrity checks remain. Do not disable these checks. Unsupported optional reads remain unknown rather than empty or fresh.
 
-This is preparation for distribution, not a Nexus upload. See RELEASE-NOTICES.md for redistribution permissions still requiring resolution. No EAC workaround is provided; use the game's supported client-mod setup.
+Download the mod from [Nexus Mods](https://www.nexusmods.com/empyriongalacticsurvival/mods/199). See RELEASE-NOTICES.md for third-party/game/scenario rights and their limits. No EAC workaround is provided; use the game's supported client-mod setup.
 
 Thanks to ravien_ff, Vermillion and contributors for [Reforged Eden 2](https://steamcommunity.com/sharedfiles/filedetails/?id=3143225812). Original Trade Ledger code/documentation are MIT-licensed; third-party/game/scenario rights remain separate in RELEASE-NOTICES.md and the included license notices.
 
