@@ -118,5 +118,3 @@ Essential structured runtime reference metadata is separately identified in
 [THIRD-PARTY-NOTICES](THIRD-PARTY-NOTICES.md); no raw scenario assets, game binaries,
 full dialogue/localization CSV, private observations or research outputs are bundled.
 Harmony/MonoMod/Cecil/Iced notices remain separate. No upstream endorsement is implied.
-
-Final 17 November polish: Places row clicks only focus details. The full checkbox cell toggles checks once. Hide/Favorite target only checked rows, or the visible cursor row when no checks exist; plain Hide/Unhide and Favorite/Unfavorite buttons use those targets. Filtering clears stale checks, and Undo restores exact membership without switching lists. Distance refresh replaces trusted player geography atomically instead of clearing it between polls; genuine unknown or changed scopes remain Unknown. Contextual Market uses one compact line per distinct offer, retaining freshness colours and hover explanations.
