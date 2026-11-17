@@ -42,8 +42,10 @@ Build locally as described in [BUILDING](docs/BUILDING.md). The generated ordina
 mod folder is `artifacts/release/stage/TradeLedger`.
 
 The user ZIP contains a manual-install mod folder and no PowerShell scripts.
-With the game fully closed, copy TradeLedger into Content/Mods. For updates,
-keep existing TradeLedger.settings and logs; replace only supplied package files.
+With the game fully closed, copy TradeLedger into Content/Mods, replacing supplied
+files for an update without deleting the folder or logs. The supplied service
+settings are normal defaults; retain an old settings file only if you deliberately
+customized those options. Keep a settings file present so observation is enabled.
 Save-local journal records remain in Mods/TradeLedger/TradeLedger.sqlite inside
 the current save. See [manual instructions](docs/release/README.md).
 Developer deployment scripts remain in source, outside the user ZIP.

@@ -16,19 +16,21 @@ Thanks to ravien_ff, Vermillion and contributors for [Reforged Eden 2](https://s
 
 1. Close Empyrion, including client/dedicated game processes. Do not install over loaded DLLs.
 2. For a new installation, place the **TradeLedger** folder in `<Empyrion>/Content/Mods/`. Its top-level loader is `TradeLedger.dll`, paired with `TradeLedger_Info.yaml` (`ModTargets: Client`). Keep the `runtime` subfolder intact. No separate application, source checkout or developer directory is required.
-3. To update an existing **TradeLedger** folder, keep your existing **TradeLedger.settings**; do not overwrite it with the ZIP defaults. Copy the other supplied files, including the runtime subfolder, into that same folder and replace matching package files.
+3. To update, copy the supplied **TradeLedger** folder into **Content/Mods**, replacing matching files, including the runtime subfolder. Normally the supplied settings can also replace the old file. Only if you manually changed service options and want to retain them, keep your existing **TradeLedger.settings** instead.
 4. **Do not delete the existing mod folder.** Preserve its logs and any other personal files. Do not modify saves or caches. A file-in-use error means stop copying until the game is fully closed; do not force replacement.
 
 No installation script is included or required. Do not enable a legacy **TradeLedgerProbeB** loader alongside TradeLedger. Resolve a legacy prototype migration before adding another active loader; the steps above cover new installations and updates to the public TradeLedger folder.
 
 New-install settings: passive `RuntimeObservation=on`, `Diagnostics=Warn`, Client targeting. Performance profiling is **OFF on every process start**, session-only opt-in through the journal's **Profile: Off/On** control; it also stops after its bounded duration/size budget. Press **`]` (RightBracket)** to open; Escape / Close dismiss. An Escape-menu Trade Ledger entry is also implemented, with paused-menu handoff covered offline; its actual visibility/click remains a user live check. Existing native-window switching remains supported by the guarded game bindings.
 
+Keep the supplied `TradeLedger.settings` present: it contains only service options (`RuntimeObservation=on`, `Diagnostics=Warn`), not UI preferences, routes or journal records. A missing settings file disables passive observation.
+
 ## Data and diagnostics
 
 Journal tabs begin **Market, Requests, Production, Destinations**. In Devices, coloured resource cards show filtered stock, device counts and per-product rates; click a resource to filter and click it again to clear. Places offers sortable Distance and Max traders, coloured relation dots and a relation filter (orange Unfriendly remains separate from Neutral). Unknown is not zero; N/A denotes a proven inapplicable faction relation. Item Browser has direct Fit graph / Center selected / Clear graph controls, with recipe and native item properties alongside the graph. Comparison's four scope icons choose POI, Body, Sector or System independently on each side.
 
 - Authoritative journal records are SQLite: `<current save>/Mods/TradeLedger/TradeLedger.sqlite`, with related Ledger metadata in that save-local directory. Updating only `Content/Mods/TradeLedger` does not remove those records. Keep the complete save-local directory when copying your own saves.
-- Deleting the installed mod folder would lose its `TradeLedger.settings` and local logs/profiler recordings, even though save-local journal data remains separate. Preserve those files during updates.
+- Deleting the installed mod folder would lose any manually changed service options and local logs/profiler recordings, even though save-local journal data remains separate. Copy updates into the existing folder instead.
 - The existing game-adjacent private `Saves/TradeLedgerCache` supports safe publication/read mirrors outside native backup trees. It is runtime-managed, not a distributable database or an independent workspace.
 - Routine logs: `<mod>/logs/operational-v1/` (up to eight 2 MiB sessions / 16 MiB). Optional recordings: `<mod>/logs/profiler-v1/` (bounded recordings, up to 32 MiB retained). No source directory is used. If the mod directory is unwritable, diagnostics may fall back to `%LOCALAPPDATA%/TradeLedger/logs`; failure of logging does not disable Ledger.
 - To investigate a hitch: explicitly enable Profile, reproduce it, disable Profile, and retain the resulting log with the package fingerprint. Ledger timings do not prove a game-wide cause. Warn/Info/Debug diagnostics are independent; Debug is temporary troubleshooting.
