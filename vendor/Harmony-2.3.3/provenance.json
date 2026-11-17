@@ -1,0 +1,20 @@
+{
+  "package": "Lib.Harmony",
+  "version": "2.3.3",
+  "url": "https://api.nuget.org/v3-flatcontainer/lib.harmony/2.3.3/lib.harmony.2.3.3.nupkg",
+  "packageSHA256": "87B63DDB92F04FCB89C30B7EBAE473C948DD65E80569EB94AEF08B163BC3BF63",
+  "selectedAsset": "lib/net452/0Harmony.dll",
+  "dllSHA256": "4C06BB6D9D75785F9B64FD551FC75D54AF9D5A5458A43CFB5BF52A5A22B24E6E",
+  "publisherRepository": "https://github.com/pardeike/Harmony",
+  "nuspecSourceCommit": "395749ff507ab4e2cd4f84cf99085ec18f6870bc",
+  "license": "MIT; bundled component notices included",
+  "signatureVerification": "Package signature not independently verified; downloaded from official NuGet HTTPS endpoint and content SHA256 pinned",
+  "embeddedComponents": [
+    "MonoMod.Core 1.1.0",
+    "MonoMod.Utils 25.0.4",
+    "MonoMod.Backports 1.1.0",
+    "MonoMod.ILHelpers 1.0.1",
+    "Mono.Cecil 0.11.5",
+    "Iced submodule 425462f47e0752f143b4f3826b875d5c33b5baf1"
+  ]
+}

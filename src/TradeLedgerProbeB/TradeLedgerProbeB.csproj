@@ -1,0 +1,139 @@
+<Project ToolsVersion="Current" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
+    <OutputType>Library</OutputType>
+    <AssemblyName Condition="'$(LedgerPublicRelease)' != 'true'">TradeLedgerProbeB</AssemblyName>
+    <AssemblyName Condition="'$(LedgerPublicRelease)' == 'true'">TradeLedger</AssemblyName>
+    <RootNamespace>TradeLedgerProbeB</RootNamespace>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>7.3</LangVersion>
+    <Deterministic>true</Deterministic>
+    <Optimize>true</Optimize>
+    <DebugType>none</DebugType>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <ImplicitlyExpandNETStandardFacades>false</ImplicitlyExpandNETStandardFacades>
+    <OutputPath>..\..\artifacts\poc-b\build\</OutputPath>
+    <IntermediateOutputPath>..\..\artifacts\poc-b\obj-loader\</IntermediateOutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="Mono.Data.Sqlite"><HintPath>$(GameManaged)\Mono.Data.Sqlite.dll</HintPath><Private>False</Private><ExternallyResolved>true</ExternallyResolved></Reference>
+    <Reference Include="System.Xml"><HintPath>$(GameManaged)\System.Xml.dll</HintPath><Private>False</Private><ExternallyResolved>true</ExternallyResolved></Reference>
+    <Reference Include="System.Runtime.Serialization"><HintPath>$(GameManaged)\System.Runtime.Serialization.dll</HintPath><Private>False</Private><ExternallyResolved>true</ExternallyResolved></Reference>
+    <Reference Include="netstandard"><HintPath>$(GameManaged)\netstandard.dll</HintPath><Private>False</Private><ExternallyResolved>true</ExternallyResolved></Reference>
+    <Reference Include="Mif"><HintPath>$(GameManaged)\Mif.dll</HintPath><Private>False</Private><ExternallyResolved>true</ExternallyResolved></Reference>
+    <Reference Include="ModApi"><HintPath>$(GameManaged)\ModApi.dll</HintPath><Private>False</Private><ExternallyResolved>true</ExternallyResolved></Reference>
+    <Reference Include="UnityEngine.CoreModule"><HintPath>$(GameManaged)\UnityEngine.CoreModule.dll</HintPath><Private>False</Private><ExternallyResolved>true</ExternallyResolved></Reference>
+    <Reference Include="UnityEngine.UIModule"><HintPath>$(GameManaged)\UnityEngine.UIModule.dll</HintPath><Private>False</Private><ExternallyResolved>true</ExternallyResolved></Reference>
+    <Reference Include="UnityEngine.IMGUIModule"><HintPath>$(GameManaged)\UnityEngine.IMGUIModule.dll</HintPath><Private>False</Private><ExternallyResolved>true</ExternallyResolved></Reference>
+    <Reference Include="UnityEngine.InputLegacyModule"><HintPath>$(GameManaged)\UnityEngine.InputLegacyModule.dll</HintPath><Private>False</Private><ExternallyResolved>true</ExternallyResolved></Reference>
+    <Reference Include="UnityEngine.TextRenderingModule"><HintPath>$(GameManaged)\UnityEngine.TextRenderingModule.dll</HintPath><Private>False</Private><ExternallyResolved>true</ExternallyResolved></Reference>
+    <Reference Include="UnityEngine.UI"><HintPath>$(GameManaged)\UnityEngine.UI.dll</HintPath><Private>False</Private><ExternallyResolved>true</ExternallyResolved></Reference>
+    <Reference Include="NGUIAssembly"><HintPath>$(GameManaged)\NGUIAssembly.dll</HintPath><Private>False</Private><ExternallyResolved>true</ExternallyResolved></Reference>
+    <Reference Include="Unity.TextMeshPro"><HintPath>$(GameManaged)\Unity.TextMeshPro.dll</HintPath><Private>False</Private><ExternallyResolved>true</ExternallyResolved></Reference>
+    <Compile Include="LedgerDiscoveredObjects.cs" /><Compile Include="LedgerObjectTypes.cs" /><Compile Include="LedgerPlaceBrowser.cs" /><Compile Include="LedgerPlaceNames.cs" /><Compile Include="LedgerPlaceBrowserWindow.cs" /><Compile Include="LedgerPlaceContextWindow.cs" /><Compile Include="LedgerDiscoveredNative.cs" /><Compile Include="LedgerDiscoveredHost.cs" />
+    <EmbeddedResource Include="PlaceNameFamilies.json"><LogicalName>TradeLedgerProbeB.PlaceNameFamilies.json</LogicalName></EmbeddedResource>
+    <EmbeddedResource Include="PlaceFactions.json"><LogicalName>TradeLedgerProbeB.PlaceFactions.json</LogicalName></EmbeddedResource>
+    <Compile Include="LedgerPlaceFactions.cs" /><Compile Include="LedgerNativePlaceFactions.cs" />
+    <EmbeddedResource Include="DiscoveredObjectTypes.json"><LogicalName>TradeLedgerProbeB.DiscoveredObjectTypes.json</LogicalName></EmbeddedResource>
+    <Compile Include="LedgerNativeContracts.cs" /><EmbeddedResource Include="NativeInstallAudit.cs.txt"><WithCulture>false</WithCulture><LogicalName>TradeLedger.NativeInstallAudit.cs</LogicalName></EmbeddedResource><EmbeddedResource Include="NativeContracts5232.json"><LogicalName>TradeLedgerProbeB.NativeContracts.json</LogicalName></EmbeddedResource>
+    <Compile Include="LedgerInventory.cs" />
+    <Compile Include="LedgerInventoryAccess.cs" />
+    <Compile Include="LedgerRequestInventory.cs" />
+    <Compile Include="LedgerRequestSellers.cs" />
+    <Compile Include="LedgerRequestSellersWindow.cs" />
+    <Compile Include="LedgerRequestInventoryWindow.cs" />
+    <Compile Include="LedgerRequests.cs" />
+    <Compile Include="LedgerProduction.cs" />
+    <Compile Include="LedgerDepositDetails.cs" />
+    <Compile Include="LedgerDepositDiscovery.cs" />
+    <Compile Include="LedgerDepositHudNative.cs" />
+    <Compile Include="LedgerDepositHudWork.cs" />
+    <Compile Include="LedgerProductionServices.cs" />
+    <Compile Include="LedgerMinerAttention.cs" />
+    <Compile Include="LedgerProductionLifecycle.cs" />
+    <Compile Include="LedgerProductionLifecycleNative.cs" />
+    <Compile Include="LedgerProductionNative.cs" />
+    <Compile Include="LedgerProductionWindow.cs" />
+    <Compile Include="LedgerProductionDisplay.cs" />
+    <Compile Include="LedgerProductionDue.cs" />
+    <Compile Include="LedgerProductionPlaces.cs" />
+    <Compile Include="LedgerRe2Requests.cs" />
+    <EmbeddedResource Include="Re2RequestDefinitions.json"><LogicalName>TradeLedgerProbeB.Re2RequestDefinitions.json</LogicalName></EmbeddedResource>
+    <Compile Include="LedgerRequestLanguage.cs" />
+    <Compile Include="LedgerManualCompletion.cs" />
+    <Compile Include="LedgerRequestMarkers.cs" />
+    <Compile Include="LedgerAutoCompletion.cs" />
+    <Compile Include="LedgerAutoCompletionHost.cs" />
+    <Compile Include="LedgerRequestBrowser.cs" />
+    <Compile Include="LedgerRequestBrowserWindow.cs" /><Compile Include="LedgerRequestCardPresentation.cs" />
+    <Compile Include="LedgerManualCompletionWindow.cs" />
+    <Compile Include="LedgerNativeCatalog.cs" />
+    <Compile Include="LedgerItemDetails.cs" />
+    <Compile Include="LedgerBrowserModel.cs" />
+    <Compile Include="LedgerGraphGeometry.cs" />
+    <Compile Include="LedgerNativeBrowser.cs" />
+    <Compile Include="LedgerBrowserWindow.cs" />
+    <Compile Include="LedgerPointerIsolation.cs" />
+    <Compile Include="LedgerTableSorting.cs" />
+    <Compile Include="LedgerNativeItemDetails.cs" />
+    <Compile Include="LedgerNativeUiArt.cs" />
+    <Compile Include="LedgerItemWindow.cs" />
+    <Compile Include="LedgerBrowse.cs" />
+    <Compile Include="LedgerBookmarks.cs" />
+    <Compile Include="LedgerGeography.cs" />
+    <Compile Include="LedgerDistances.cs" />
+    <Compile Include="LedgerNativeGeography.cs" />
+    <Compile Include="LedgerComparison.cs" />
+    <Compile Include="LedgerLocationWindow.cs" />
+    <Compile Include="LedgerNativeBookmarks.cs" />
+    <Compile Include="LedgerNativeMarkerBackend.cs" />
+    <Compile Include="LedgerMarkerModel.cs" />
+    <Compile Include="LedgerMarkerRepository.cs" />
+    <Compile Include="LedgerMarkerIdentity.cs" />
+    <Compile Include="LedgerMarkerWindow.cs" />
+    <Compile Include="LedgerBookmarkOwnership.cs" />
+    <Compile Include="LedgerPresentation.cs" />
+    <Compile Include="LedgerItemPins.cs" />
+    <Compile Include="LedgerViewData.cs" />
+    <Compile Include="LedgerPrototypeWindow.cs" />
+    <Compile Include="LedgerJournalUi.cs" /><Compile Include="LedgerViewReader.cs" /><Compile Include="LedgerInstallPaths.cs" />
+    <Compile Include="LedgerJournalUiWindow.cs" />
+    <Compile Include="LedgerJournalLifecycle.cs" />
+    <Compile Include="LedgerWindowSwitch.cs" />
+    <Compile Include="LedgerNativeWindowSwitch.cs" />
+    <Compile Include="ProbeB.cs" />
+    <Compile Include="BoundedDebugLog.cs" />
+    <Compile Include="LedgerDiagnostics.cs" />
+    <Compile Include="LedgerProfiler.cs" />
+    <Compile Include="LedgerMenuEntry.cs" />
+    <Compile Include="..\TradeLedgerProbe\Compact.cs"><Link>Compact.cs</Link></Compile>
+    <Compile Include="Contracts.cs" />
+    <Compile Include="ObservationDiagnostics.cs" />
+    <Compile Include="TraderCapturePolicy.cs" />
+    <Compile Include="DirectEvidence.cs" />
+    <Compile Include="ExceptionTrace.cs" />
+    <Compile Include="RuntimeBootstrap.cs" />
+    <Compile Include="LedgerModel.cs" />
+    <Compile Include="LedgerOfferFreshness.cs" />
+    <Compile Include="LedgerTradeUpdates.cs" />
+    <Compile Include="LedgerRouteFlow.cs" />
+    <Compile Include="LedgerRoutePurchases.cs" />
+    <Compile Include="LedgerOfferFreshnessWindow.cs" />
+    <Compile Include="LedgerSaveAliases.cs" />
+    <Compile Include="LedgerPortableSave.cs" />
+    <Compile Include="LedgerStore.cs" />
+    <Compile Include="LedgerDialogueStore.cs" />
+    <Compile Include="LedgerHost.cs" />
+    <Compile Include="LedgerTrades.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="$(ProbeBuildFile)" />
+    <Compile Include="$(ContractFile)" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

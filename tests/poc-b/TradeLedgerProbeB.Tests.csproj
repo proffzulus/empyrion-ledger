@@ -1,0 +1,34 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="Current" DefaultTargets="Build">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <PlatformTarget>x64</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+    <AssemblyName>TradeLedgerProbeB.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <LangVersion>7.3</LangVersion>
+    <Deterministic>true</Deterministic>
+    <DebugType>none</DebugType>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <ImplicitlyExpandNETStandardFacades>false</ImplicitlyExpandNETStandardFacades>
+    <OutputPath>..\..\artifacts\poc-b\tests\</OutputPath>
+    <IntermediateOutputPath>..\..\artifacts\poc-b\obj-tests\</IntermediateOutputPath>
+    <StartupObject>BOfflineTests.PublicTests</StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" /><Reference Include="System.Runtime.Serialization" /><Reference Include="System.Xml" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="Mono.Data.Sqlite"><HintPath>$(GameManaged)\Mono.Data.Sqlite.dll</HintPath><Private>False</Private><ExternallyResolved>true</ExternallyResolved></Reference>
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="netstandard"><HintPath>$(GameManaged)\netstandard.dll</HintPath><Private>False</Private><ExternallyResolved>true</ExternallyResolved></Reference>
+    <Reference Include="TradeLedgerProbeB"><HintPath>$(ProbeDll)</HintPath><Private>True</Private></Reference>
+    <Reference Include="Mif"><HintPath>$(GameManaged)\Mif.dll</HintPath><Private>False</Private><ExternallyResolved>true</ExternallyResolved></Reference>
+    <Reference Include="ModApi"><HintPath>$(GameManaged)\ModApi.dll</HintPath><Private>False</Private><ExternallyResolved>true</ExternallyResolved></Reference>
+    <Reference Include="UnityEngine.CoreModule"><HintPath>$(GameManaged)\UnityEngine.CoreModule.dll</HintPath><Private>False</Private><ExternallyResolved>true</ExternallyResolved></Reference>
+    <Reference Include="0Harmony"><HintPath>$(HarmonyDll)</HintPath><Private>False</Private><ExternallyResolved>true</ExternallyResolved></Reference>
+    <Reference Include="TradeLedgerProbeB.Runtime"><HintPath>$(AdapterDll)</HintPath><Private>True</Private><ExternallyResolved>true</ExternallyResolved></Reference>
+    </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+<ItemGroup><Compile Include="Program.cs" /><Compile Include="Mocks.cs" /><Compile Include="LedgerServiceHorizonTests.cs" /><Compile Include="LedgerDepositHudWorkTests.cs" /><Compile Include="LedgerDepositHudTests.cs" /><Compile Include="LedgerDepositDiscoveryTests.cs" /><Compile Include="LedgerGraphOverviewTests.cs" /><Compile Include="LedgerGraphRefinementTests.cs" /><Compile Include="LedgerDistanceTests.cs" /><Compile Include="LedgerProfilerTests.cs" /><Compile Include="LedgerJournalLifecycleTests.cs" /><Compile Include="LedgerUiConsistencyTests.cs" /><Compile Include="LedgerPlacesContextTests.cs" /><Compile Include="LedgerDevicesFilterTests.cs" /><Compile Include="LedgerRoutePurchaseTests.cs" /><Compile Include="LedgerRequestSellerTests.cs" /><Compile Include="LedgerOfferFreshnessTests.cs" /><Compile Include="LedgerMarkerIdentityTests.cs" /><Compile Include="LedgerProductionDueTests.cs" /></ItemGroup></Project>

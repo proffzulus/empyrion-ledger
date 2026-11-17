@@ -1,0 +1,77 @@
+using System;
+using System.IO;
+using System.Linq;
+using System.Web.Script.Serialization;
+using Trivial.Mono.Cecil;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using System.Security.Cryptography;
+public static class LedgerInstallContractAudit {
+ static string Tk(TypeReference t){
+  if(t is PinnedType)return Tk(((PinnedType)t).ElementType);
+  if(t is RequiredModifierType)return Tk(((RequiredModifierType)t).ElementType);if(t is OptionalModifierType)return Tk(((OptionalModifierType)t).ElementType);
+  var gp=t as GenericParameter;if(gp!=null)return (gp.Type==GenericParameterType.Method?"!!":"!")+gp.Position;
+  var gi=t as GenericInstanceType;if(gi!=null)return gi.ElementType.FullName+"<"+string.Join(",",gi.GenericArguments.Select(Tk))+">";
+  var ar=t as ArrayType;if(ar!=null)return Tk(ar.ElementType)+"["+new string(',',ar.Rank-1)+"]";
+  var br=t as ByReferenceType;if(br!=null)return Tk(br.ElementType)+"&";var pt=t as PointerType;if(pt!=null)return Tk(pt.ElementType)+"*";return t.FullName;
+ }
+ static string Bound(TypeReference t,MethodReference m){
+  var p=t as GenericParameter;
+  if(p!=null){var gm=m as GenericInstanceMethod;var gt=m.DeclaringType as GenericInstanceType;
+   if(p.Type==GenericParameterType.Method&&gm!=null)return Tk(gm.GenericArguments[p.Position]);
+   if(p.Type==GenericParameterType.Type&&gt!=null)return Tk(gt.GenericArguments[p.Position]);return Tk(t);}
+  var gi=t as GenericInstanceType;if(gi!=null)return gi.ElementType.FullName+"<"+string.Join(",",gi.GenericArguments.Select(x=>Bound(x,m)))+">";
+  var ar=t as ArrayType;if(ar!=null)return Bound(ar.ElementType,m)+"["+new string(',',ar.Rank-1)+"]";
+  var br=t as ByReferenceType;if(br!=null)return Bound(br.ElementType,m)+"&";return Tk(t);
+ }
+ static string Key(MemberReference m){
+  var f=m as FieldReference;if(f!=null)return "F|"+Tk(f.DeclaringType)+"|"+f.Name+"|"+Bound(f.FieldType,new MethodReference("field",f.FieldType,f.DeclaringType))+"|"+f.Resolve().IsStatic;
+  var mm=m as MethodReference;if(mm!=null){var gm=mm as GenericInstanceMethod;return "M|"+Tk(mm.DeclaringType)+"|"+mm.Name+(gm==null?"":"<"+string.Join(",",gm.GenericArguments.Select(Tk))+">")+"|"+Bound(mm.ReturnType,mm)+"|"+string.Join(",",mm.Parameters.Select(p=>Bound(p.ParameterType,mm)))+"|"+(!mm.HasThis);}
+  var t=m as TypeReference;return "T|"+(t==null?m.ToString():Tk(t));
+ }
+
+ sealed class Fact{public string Key,Body;public string[] Operands;}
+ sealed class Image:IDisposable{
+  public byte[] Bytes;public AssemblyDefinition Assembly;public Func<int,int> Offset;
+  public Image(string path){Bytes=File.ReadAllBytes(path);int pe=BitConverter.ToInt32(Bytes,0x3c),sections=BitConverter.ToUInt16(Bytes,pe+6),table=pe+24+BitConverter.ToUInt16(Bytes,pe+20);
+   Offset=rva=>{for(int i=0;i<sections;i++){int at=table+i*40,va=BitConverter.ToInt32(Bytes,at+12),size=Math.Max(BitConverter.ToInt32(Bytes,at+8),BitConverter.ToInt32(Bytes,at+16));if(rva>=va&&rva<va+size)return BitConverter.ToInt32(Bytes,at+20)+rva-va;}throw new InvalidDataException("RVA outside section");};
+   var resolver=new DefaultAssemblyResolver();resolver.AddSearchDirectory(Path.GetDirectoryName(path));Assembly=AssemblyDefinition.ReadAssembly(path,new ReaderParameters{AssemblyResolver=resolver});
+  }
+  public void Dispose(){Assembly.Dispose();}
+ }
+ static Fact Read(MemberReference m,Image source){var image=source.Bytes;var offset=source.Offset;
+var md=m as MethodDefinition;var fd=m as FieldDefinition;var operands=new List<string>();string hash=null;
+    if(md!=null){hash="none";if(md.HasBody){int at=offset(md.RVA),header=(image[at]&3)==2?1:(BitConverter.ToUInt16(image,at)>>12)*4;var bytes=new byte[md.Body.CodeSize];Array.Copy(image,at+header,bytes,0,bytes.Length);
+     foreach(var i in md.Body.Instructions){var op=i.OpCode.OperandType;if(op==Trivial.Mono.Cecil.Cil.OperandType.InlineField||op==Trivial.Mono.Cecil.Cil.OperandType.InlineMethod||op==Trivial.Mono.Cecil.Cil.OperandType.InlineType||op==Trivial.Mono.Cecil.Cil.OperandType.InlineTok||op==Trivial.Mono.Cecil.Cil.OperandType.InlineString||op==Trivial.Mono.Cecil.Cil.OperandType.InlineSig){
+      operands.Add(op==Trivial.Mono.Cecil.Cil.OperandType.InlineString?"S|"+(string)i.Operand:op==Trivial.Mono.Cecil.Cil.OperandType.InlineSig?"SIG|"+i.Operand:Key((MemberReference)i.Operand));Array.Clear(bytes,i.Offset+i.OpCode.Size,4);
+     }}
+     operands.Add("LOCALS|"+string.Join(",",md.Body.Variables.Select(v=>Tk(v.VariableType)+(v.IsPinned?" pinned":""))));operands.Add("INIT|"+md.Body.InitLocals);
+     foreach(var eh in md.Body.ExceptionHandlers){string flag=eh.HandlerType==Trivial.Mono.Cecil.Cil.ExceptionHandlerType.Catch?"Clause":eh.HandlerType.ToString();operands.Add("EH|"+flag+"|"+eh.TryStart.Offset+"|"+((eh.TryEnd==null?md.Body.CodeSize:eh.TryEnd.Offset)-eh.TryStart.Offset)+"|"+eh.HandlerStart.Offset+"|"+((eh.HandlerEnd==null?md.Body.CodeSize:eh.HandlerEnd.Offset)-eh.HandlerStart.Offset)+"|"+(flag=="Clause"?Tk(eh.CatchType):flag=="Filter"?eh.FilterStart.Offset.ToString():""));}
+     using(var sha=SHA256.Create())hash=BitConverter.ToString(sha.ComputeHash(bytes)).Replace("-","");
+    }}
+    return new Fact{Key=Key(m),Body=hash,Operands=operands.ToArray()};
+
+ }
+ static string Rename(string key){var p=key.Split('|');if(p.Length==6&&p[0]=="M")p[2]="<method>";return string.Join("|",p);}
+ static string[] Strings(object value){return ((System.Collections.IEnumerable)value).Cast<object>().Select(x=>(string)x).ToArray();}
+ static bool Semantics(Fact fact,Dictionary<string,object> spec){return fact.Body==(string)spec["Body"]&&fact.Operands.SequenceEqual(Strings(spec["Operands"]));}
+ public static string[] Inspect(string path,string profileJson){
+  var json=new JavaScriptSerializer{MaxJsonLength=int.MaxValue};var profile=json.Deserialize<Dictionary<string,object>>(profileJson);
+  var specs=((System.Collections.IEnumerable)profile["Members"]).Cast<Dictionary<string,object>>().ToDictionary(s=>Convert.ToInt32(s["Token"]));
+  var caps=(Dictionary<string,object>)profile["Capabilities"];var results=new List<string>();var resolved=new Dictionary<int,MemberReference>();var owners=new Dictionary<int,int>();
+  using(var source=new Image(path)){
+   foreach(var cap in caps.OrderBy(c=>c.Key,StringComparer.Ordinal))try{
+    foreach(var required in (System.Collections.IEnumerable)cap.Value){int token=Convert.ToInt32(required);if(resolved.ContainsKey(token))continue;
+     var spec=specs[token];var type=source.Assembly.MainModule.GetType(((string)spec["Owner"]).Replace('+','/'));if(type==null)throw new InvalidDataException("missing-owner:"+spec["Owner"]);
+     var candidates=(token>>24==4?type.Fields.Cast<MemberReference>():type.Methods.Cast<MemberReference>()).ToArray();if(candidates.Length>4096)throw new InvalidDataException("owner-member-bound");
+     var matches=candidates.Where(c=>Key(c)==(string)spec["Key"]).Take(2).ToArray();
+     if(matches.Length==0&&token>>24==6)matches=candidates.Where(c=>Rename(Key(c))==Rename((string)spec["Key"])&&((MethodDefinition)c).HasBody&&Semantics(Read(c,source),spec)).Take(2).ToArray();
+     if(matches.Length!=1)throw new InvalidDataException("missing-or-ambiguous-member:"+token.ToString("X8"));
+     var chosen=matches[0];if(token>>24==6&&!Semantics(Read(chosen,source),spec))throw new InvalidDataException("changed-semantic-contract:"+token.ToString("X8"));
+     int native=chosen.MetadataToken.ToInt32(),previous;if(owners.TryGetValue(native,out previous)&&previous!=token)throw new InvalidDataException("non-unique-native-binding");
+     resolved.Add(token,chosen);owners[native]=token;
+    }results.Add(cap.Key+"=ready");
+   }catch(Exception e){results.Add(cap.Key+"=unavailable: "+e.Message);}
+  }return results.ToArray();
+ }
+}

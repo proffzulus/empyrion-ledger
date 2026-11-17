@@ -1,0 +1,48 @@
+<Project ToolsVersion="Current" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
+    <OutputType>Library</OutputType>
+    <AssemblyName Condition="'$(LedgerPublicRelease)' != 'true'">TradeLedgerProbeB.Runtime</AssemblyName>
+    <AssemblyName Condition="'$(LedgerPublicRelease)' == 'true'">TradeLedger.Runtime</AssemblyName>
+    <RootNamespace>TradeLedgerProbeB</RootNamespace>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>7.3</LangVersion>
+    <Deterministic>true</Deterministic>
+    <Optimize>true</Optimize>
+    <DebugType>none</DebugType>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <ImplicitlyExpandNETStandardFacades>false</ImplicitlyExpandNETStandardFacades>
+    <OutputPath>..\..\artifacts\poc-b\build\</OutputPath>
+    <IntermediateOutputPath>..\..\artifacts\poc-b\obj-runtime\</IntermediateOutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="netstandard"><HintPath>$(GameManaged)\netstandard.dll</HintPath><Private>False</Private><ExternallyResolved>true</ExternallyResolved></Reference>
+    <Reference Include="Mif"><HintPath>$(GameManaged)\Mif.dll</HintPath><Private>False</Private><ExternallyResolved>true</ExternallyResolved></Reference>
+    <Reference Include="ModApi"><HintPath>$(GameManaged)\ModApi.dll</HintPath><Private>False</Private><ExternallyResolved>true</ExternallyResolved></Reference>
+    <Reference Include="UnityEngine.CoreModule"><HintPath>$(GameManaged)\UnityEngine.CoreModule.dll</HintPath><Private>False</Private><ExternallyResolved>true</ExternallyResolved></Reference>
+    <Reference Include="UnityEngine.UIModule"><HintPath>$(GameManaged)\UnityEngine.UIModule.dll</HintPath><Private>False</Private><ExternallyResolved>true</ExternallyResolved></Reference>
+    <Reference Include="TradeLedgerProbeB"><HintPath>$(ProbeDll)</HintPath><Private>False</Private><ExternallyResolved>true</ExternallyResolved></Reference>
+    <Reference Include="0Harmony"><HintPath>$(HarmonyDll)</HintPath><Private>False</Private><ExternallyResolved>true</ExternallyResolved></Reference>
+    <Reference Include="NGUIAssembly"><HintPath>$(GameManaged)\NGUIAssembly.dll</HintPath><Private>False</Private><ExternallyResolved>true</ExternallyResolved></Reference>
+    <Reference Include="Unity.TextMeshPro"><HintPath>$(GameManaged)\Unity.TextMeshPro.dll</HintPath><Private>False</Private><ExternallyResolved>true</ExternallyResolved></Reference>
+    <Reference Include="UnityEngine.UI"><HintPath>$(GameManaged)\UnityEngine.UI.dll</HintPath><Private>False</Private><ExternallyResolved>true</ExternallyResolved></Reference>
+    <Compile Include="RuntimeObserver.cs" />
+    <Compile Include="RuntimeObservationDiagnostics.cs" />
+    <Compile Include="TraderCaptureRuntime.cs" />
+    <Compile Include="DirectEvidenceRuntime.cs" />
+    <Compile Include="HookDiagnostics.cs" />
+    <Compile Include="ReplacementPreflight.cs" />
+    <Compile Include="StaticCollisionFixture.cs" />
+    <Compile Include="LedgerCaptureRuntime.cs" />
+    <Compile Include="LedgerTradeRuntime.cs" />
+    <Compile Include="LedgerHandInRuntime.cs" />
+    <Compile Include="LedgerProductionRuntime.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

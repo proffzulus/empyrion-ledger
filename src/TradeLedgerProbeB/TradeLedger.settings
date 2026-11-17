@@ -1,0 +1,5 @@
+# Normal passive observation is enabled. No inventory or dialogue actions are issued.
+RuntimeObservation=on
+# Off/Warn/Info/Debug. Debug is opt-in troubleshooting; capture never depends on logs.
+Diagnostics=Warn
+# Performance profiling is OFF at startup. Enable temporarily with the journal Profile control.

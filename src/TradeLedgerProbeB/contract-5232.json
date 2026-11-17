@@ -1,0 +1,733 @@
+{
+  "build": "5232 v1.20.1",
+  "hashes": {
+    "Assembly-CSharp.dll": "28E43D961A14A636617747B8734E6EC89F47EA6E57A2EE3F31533237BF468369",
+    "Assembly-CSharp-firstpass.dll": "44C81BC3DA16C1CEA164BFD35254BBA259E033C7CD3875BF2540667477054541",
+    "ModApi.dll": "7A7372EA08EB97DF47829358B06B1502C4BCC29E164D533D6EAD0D1C25FF4C9D",
+    "Mif.dll": "117C65203106D89F83173AAA89AA8917B42CC45739A81D5B932F4B27FC8228AA",
+    "UnityEngine.CoreModule.dll": "68D360251A7AEA19CBA74626D5E9D55E801C51DDA1F4B153B5BA4825C19C9E35",
+    "NGUIAssembly.dll": "891051A984A8C8D3FA8C113B0DE76E399E3E2143AF40CEB866D3F74C9F3AD61D",
+    "Unity.TextMeshPro.dll": "974A14CA97E4239FD545310F5C1CDBFA59876ABDCFD2269186BD64717183F528",
+    "netstandard.dll": "6AE62E082DC494A2433984177F60CA4DB5FAE69B1F360A8B33754172B310B8C5",
+    "UnityEngine.UI.dll": "6202D91C51432FC704BF57B2E310A96EF2175EFE8BB891B0B7984AC37C307642",
+    "UnityEngine.UIModule.dll": "0A19B676F5FE6C5F1322BDED5E9E424EBB9FE1AAD85EA8C521A23349F3C8BCE7",
+    "System.Runtime.Serialization.dll": "C1058A78E3828052B92D535D8FB27F9F3C9EB9CBFCDEE1904898611B44D7CDB7",
+    "System.Xml.dll": "7A3587565CABF8294CFC372991545F3AE5790D54264E40069F5E0E460B66BC55",
+    "Mono.Data.Sqlite.dll": "91914602F682E0D4278DEC0C1F29E3A781FC63C8C3FD7DC864E6AD3F9B95FD38",
+    "System.Data.dll": "534AC87E6A7C1E3CE02FF2D88F4FFA45E7B5FC44E6236922C2F46F8174A29E56",
+    "System.Transactions.dll": "8983073E9627B1086102A9871A23E2BA53A0BB9FCC76826CAB9F5DEC9107E21A"
+  },
+  "methods": [
+    {
+      "token": 100715804,
+      "type": "Assembly-CSharp.PcitureEditorConnectionToken",
+      "name": "CopyComponent",
+      "parameterCount": 0,
+      "signature": "System.Void Assembly-CSharp.PcitureEditorConnectionToken::CopyComponent()",
+      "nativeToken": 100715805
+    },
+    {
+      "token": 100715807,
+      "type": "Assembly-CSharp.PcitureEditorConnectionToken",
+      "name": "AddDatabase",
+      "parameterCount": 0,
+      "signature": "System.Void Assembly-CSharp.PcitureEditorConnectionToken::AddDatabase()",
+      "nativeToken": 100715808
+    },
+    {
+      "token": 100715806,
+      "type": "Assembly-CSharp.PcitureEditorConnectionToken",
+      "name": "IncreaseFunction",
+      "parameterCount": 2,
+      "signature": "System.Void Assembly-CSharp.PcitureEditorConnectionToken::IncreaseFunction(Assembly-CSharp.NodeHelper,System.Int32)",
+      "nativeToken": 100715807
+    },
+    {
+      "token": 100715814,
+      "type": "Assembly-CSharp.PcitureEditorConnectionToken",
+      "name": "UncheckVector",
+      "parameterCount": 0,
+      "signature": "System.Void Assembly-CSharp.PcitureEditorConnectionToken::UncheckVector()",
+      "nativeToken": 100715815
+    },
+    {
+      "token": 100715805,
+      "type": "Assembly-CSharp.PcitureEditorConnectionToken",
+      "name": "UncheckBookmark",
+      "parameterCount": 1,
+      "signature": "System.Void Assembly-CSharp.PcitureEditorConnectionToken::UncheckBookmark(System.Boolean)",
+      "nativeToken": 100715806
+    },
+    {
+      "token": 100714426,
+      "type": "Assembly-CSharp.DiskTypeConnectionToken",
+      "name": "LoadToolbox",
+      "parameterCount": 4,
+      "signature": "System.Void Assembly-CSharp.DiskTypeConnectionToken::LoadToolbox(System.String,System.String,System.Collections.Generic.List`1<System.String>,System.Boolean)",
+      "nativeToken": 100714427
+    },
+    {
+      "token": 100714417,
+      "type": "Assembly-CSharp.DiskTypeConnectionToken",
+      "name": "UncheckBookmark",
+      "parameterCount": 1,
+      "signature": "System.Void Assembly-CSharp.DiskTypeConnectionToken::UncheckBookmark(System.Boolean)",
+      "nativeToken": 100714418
+    },
+    {
+      "token": 100690550,
+      "type": "DialogueSystem",
+      "name": "SetAnswerIndex",
+      "parameterCount": 1,
+      "signature": "System.Void DialogueSystem::SetAnswerIndex(System.Int32)",
+      "nativeToken": 100690550
+    }
+  ],
+  "fields": [
+    {
+      "token": 67158380,
+      "type": "Assembly-CSharp.RegistryTreeConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "RegistryTreeConnectionToken",
+      "signature": "Assembly-CSharp.RegistryTreeConnectionToken Assembly-CSharp.RegistryTreeConnectionToken::keywordsID"
+    },
+    {
+      "token": 67158400,
+      "type": "Assembly-CSharp.RegistryTreeConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "Dictionary`2",
+      "signature": "System.Collections.Generic.Dictionary`2<System.String,Assembly-CSharp.RegistryTreeConnectionToken/EditorCollectionConnectionToken> Assembly-CSharp.RegistryTreeConnectionToken::keywordsID"
+    },
+    {
+      "token": 67158401,
+      "type": "Assembly-CSharp.RegistryTreeConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "Stack`1",
+      "signature": "System.Collections.Generic.Stack`1<System.String> Assembly-CSharp.RegistryTreeConnectionToken::keywordsID"
+    },
+    {
+      "token": 67158404,
+      "type": "Assembly-CSharp.RegistryTreeConnectionToken+EditorCollectionConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "OutlineAttributeConnectionToken",
+      "signature": "Assembly-CSharp.OutlineAttributeConnectionToken Assembly-CSharp.RegistryTreeConnectionToken/EditorCollectionConnectionToken::keywordsID"
+    },
+    {
+      "token": 67158405,
+      "type": "Assembly-CSharp.RegistryTreeConnectionToken+EditorCollectionConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "GameObject",
+      "signature": "UnityEngine.GameObject Assembly-CSharp.RegistryTreeConnectionToken/EditorCollectionConnectionToken::keywordsID"
+    },
+    {
+      "token": 67158408,
+      "type": "Assembly-CSharp.RegistryTreeConnectionToken+EditorCollectionConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "List`1",
+      "signature": "System.Collections.Generic.List`1<UIPanel> Assembly-CSharp.RegistryTreeConnectionToken/EditorCollectionConnectionToken::keywordsID"
+    },
+    {
+      "token": 67158409,
+      "type": "Assembly-CSharp.RegistryTreeConnectionToken+EditorCollectionConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "CanvasGroup",
+      "signature": "UnityEngine.CanvasGroup Assembly-CSharp.RegistryTreeConnectionToken/EditorCollectionConnectionToken::keywordsID"
+    },
+    {
+      "token": 67158062,
+      "type": "Assembly-CSharp.PcitureEditorConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "Transform",
+      "signature": "UnityEngine.Transform Assembly-CSharp.PcitureEditorConnectionToken::keywordsID"
+    },
+    {
+      "token": 67158063,
+      "type": "Assembly-CSharp.PcitureEditorConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "SolutionLayout",
+      "signature": "Assembly-CSharp.SolutionLayout Assembly-CSharp.PcitureEditorConnectionToken::keywordsID"
+    },
+    {
+      "token": 67158065,
+      "type": "Assembly-CSharp.PcitureEditorConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "ActionEditor",
+      "signature": "Assembly-CSharp.ActionEditor Assembly-CSharp.PcitureEditorConnectionToken::keywordsID"
+    },
+    {
+      "token": 67158066,
+      "type": "Assembly-CSharp.PcitureEditorConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "DriveResolver",
+      "signature": "Assembly-CSharp.ActionEditor/DriveResolver Assembly-CSharp.PcitureEditorConnectionToken::keywordsID"
+    },
+    {
+      "token": 67158064,
+      "type": "Assembly-CSharp.PcitureEditorConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "Single",
+      "signature": "System.Single Assembly-CSharp.PcitureEditorConnectionToken::keywordsID"
+    },
+    {
+      "token": 67158044,
+      "type": "Assembly-CSharp.PcitureEditorConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "UIFastActionList",
+      "signature": "UIFastActionList Assembly-CSharp.PcitureEditorConnectionToken::keywordsID"
+    },
+    {
+      "token": 67158049,
+      "type": "Assembly-CSharp.PcitureEditorConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "UIInput",
+      "signature": "UIInput Assembly-CSharp.PcitureEditorConnectionToken::keywordsID"
+    },
+    {
+      "token": 67158055,
+      "type": "Assembly-CSharp.PcitureEditorConnectionToken",
+      "name": "variable",
+      "fieldTypeName": "UILabel",
+      "signature": "UILabel Assembly-CSharp.PcitureEditorConnectionToken::variable"
+    },
+    {
+      "token": 67158056,
+      "type": "Assembly-CSharp.PcitureEditorConnectionToken",
+      "name": "dataSet",
+      "fieldTypeName": "UILabel",
+      "signature": "UILabel Assembly-CSharp.PcitureEditorConnectionToken::dataSet"
+    },
+    {
+      "token": 67130174,
+      "type": "Assembly-CSharp.ActionEditor",
+      "name": "keywordsID",
+      "fieldTypeName": "List`1",
+      "signature": "System.Collections.Generic.List`1<Assembly-CSharp.ActionEditor/DriveResolver> Assembly-CSharp.ActionEditor::keywordsID"
+    },
+    {
+      "token": 67130177,
+      "type": "Assembly-CSharp.ActionEditor",
+      "name": "keywordsID",
+      "fieldTypeName": "Boolean",
+      "signature": "System.Boolean Assembly-CSharp.ActionEditor::keywordsID"
+    },
+    {
+      "token": 67130182,
+      "type": "Assembly-CSharp.ActionEditor+DriveResolver",
+      "name": "keywordsID",
+      "fieldTypeName": "Int32",
+      "signature": "System.Int32 Assembly-CSharp.ActionEditor/DriveResolver::keywordsID"
+    },
+    {
+      "token": 67130183,
+      "type": "Assembly-CSharp.ActionEditor+DriveResolver",
+      "name": "colorInitialized",
+      "fieldTypeName": "Int32",
+      "signature": "System.Int32 Assembly-CSharp.ActionEditor/DriveResolver::colorInitialized"
+    },
+    {
+      "token": 67130184,
+      "type": "Assembly-CSharp.ActionEditor+DriveResolver",
+      "name": "messageCollection",
+      "fieldTypeName": "Int32",
+      "signature": "System.Int32 Assembly-CSharp.ActionEditor/DriveResolver::messageCollection"
+    },
+    {
+      "token": 67130185,
+      "type": "Assembly-CSharp.ActionEditor+DriveResolver",
+      "name": "valuesSet",
+      "fieldTypeName": "Int32",
+      "signature": "System.Int32 Assembly-CSharp.ActionEditor/DriveResolver::valuesSet"
+    },
+    {
+      "token": 67130186,
+      "type": "Assembly-CSharp.ActionEditor+DriveResolver",
+      "name": "firstMessage",
+      "fieldTypeName": "Int32",
+      "signature": "System.Int32 Assembly-CSharp.ActionEditor/DriveResolver::firstMessage"
+    },
+    {
+      "token": 67130187,
+      "type": "Assembly-CSharp.ActionEditor+DriveResolver",
+      "name": "variable",
+      "fieldTypeName": "Int32",
+      "signature": "System.Int32 Assembly-CSharp.ActionEditor/DriveResolver::variable"
+    },
+    {
+      "token": 67135903,
+      "type": "UIActionList",
+      "name": "keywordsID",
+      "fieldTypeName": "List`1",
+      "signature": "System.Collections.Generic.List`1<Assembly-CSharp.PageSetConnectionToken> UIActionList::keywordsID"
+    },
+    {
+      "token": 67135863,
+      "type": "Assembly-CSharp.PageSetConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "String",
+      "signature": "System.String Assembly-CSharp.PageSetConnectionToken::keywordsID"
+    },
+    {
+      "token": 67135864,
+      "type": "Assembly-CSharp.PageSetConnectionToken",
+      "name": "colorInitialized",
+      "fieldTypeName": "String",
+      "signature": "System.String Assembly-CSharp.PageSetConnectionToken::colorInitialized"
+    },
+    {
+      "token": 67158072,
+      "type": "Assembly-CSharp.PcitureEditorConnectionToken+DeviceEventArgsConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "String",
+      "signature": "System.String Assembly-CSharp.PcitureEditorConnectionToken/DeviceEventArgsConnectionToken::keywordsID"
+    },
+    {
+      "token": 67158073,
+      "type": "Assembly-CSharp.PcitureEditorConnectionToken+DeviceEventArgsConnectionToken",
+      "name": "colorInitialized",
+      "fieldTypeName": "String",
+      "signature": "System.String Assembly-CSharp.PcitureEditorConnectionToken/DeviceEventArgsConnectionToken::colorInitialized"
+    },
+    {
+      "token": 67158074,
+      "type": "Assembly-CSharp.PcitureEditorConnectionToken+DeviceEventArgsConnectionToken",
+      "name": "messageCollection",
+      "fieldTypeName": "String",
+      "signature": "System.String Assembly-CSharp.PcitureEditorConnectionToken/DeviceEventArgsConnectionToken::messageCollection"
+    },
+    {
+      "token": 67158075,
+      "type": "Assembly-CSharp.PcitureEditorConnectionToken+DeviceEventArgsConnectionToken",
+      "name": "valuesSet",
+      "fieldTypeName": "String",
+      "signature": "System.String Assembly-CSharp.PcitureEditorConnectionToken/DeviceEventArgsConnectionToken::valuesSet"
+    },
+    {
+      "token": 67158076,
+      "type": "Assembly-CSharp.PcitureEditorConnectionToken+DeviceEventArgsConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "Boolean",
+      "signature": "System.Boolean Assembly-CSharp.PcitureEditorConnectionToken/DeviceEventArgsConnectionToken::keywordsID"
+    },
+    {
+      "token": 67158077,
+      "type": "Assembly-CSharp.PcitureEditorConnectionToken+DeviceEventArgsConnectionToken",
+      "name": "colorInitialized",
+      "fieldTypeName": "Boolean",
+      "signature": "System.Boolean Assembly-CSharp.PcitureEditorConnectionToken/DeviceEventArgsConnectionToken::colorInitialized"
+    },
+    {
+      "token": 67158078,
+      "type": "Assembly-CSharp.PcitureEditorConnectionToken+DeviceEventArgsConnectionToken",
+      "name": "messageCollection",
+      "fieldTypeName": "Boolean",
+      "signature": "System.Boolean Assembly-CSharp.PcitureEditorConnectionToken/DeviceEventArgsConnectionToken::messageCollection"
+    },
+    {
+      "token": 67158079,
+      "type": "Assembly-CSharp.PcitureEditorConnectionToken+DeviceEventArgsConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "Int32",
+      "signature": "System.Int32 Assembly-CSharp.PcitureEditorConnectionToken/DeviceEventArgsConnectionToken::keywordsID"
+    },
+    {
+      "token": 67156304,
+      "type": "Assembly-CSharp.DiskTypeConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "Transform",
+      "signature": "UnityEngine.Transform Assembly-CSharp.DiskTypeConnectionToken::keywordsID"
+    },
+    {
+      "token": 67156302,
+      "type": "Assembly-CSharp.DiskTypeConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "SolutionLayout",
+      "signature": "Assembly-CSharp.SolutionLayout Assembly-CSharp.DiskTypeConnectionToken::keywordsID"
+    },
+    {
+      "token": 67156274,
+      "type": "Assembly-CSharp.DiskTypeConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "TextMeshPro",
+      "signature": "TMPro.TextMeshPro Assembly-CSharp.DiskTypeConnectionToken::keywordsID"
+    },
+    {
+      "token": 67156275,
+      "type": "Assembly-CSharp.DiskTypeConnectionToken",
+      "name": "colorInitialized",
+      "fieldTypeName": "TextMeshPro",
+      "signature": "TMPro.TextMeshPro Assembly-CSharp.DiskTypeConnectionToken::colorInitialized"
+    },
+    {
+      "token": 67156278,
+      "type": "Assembly-CSharp.DiskTypeConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "List`1",
+      "signature": "System.Collections.Generic.List`1<TMPro.TextMeshPro> Assembly-CSharp.DiskTypeConnectionToken::keywordsID"
+    },
+    {
+      "token": 67156284,
+      "type": "Assembly-CSharp.DiskTypeConnectionToken",
+      "name": "colorInitialized",
+      "fieldTypeName": "String",
+      "signature": "System.String Assembly-CSharp.DiskTypeConnectionToken::colorInitialized"
+    },
+    {
+      "token": 67156309,
+      "type": "Assembly-CSharp.DiskTypeConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "ReferenceHelper",
+      "signature": "Assembly-CSharp.ReferenceHelper Assembly-CSharp.DiskTypeConnectionToken::keywordsID"
+    },
+    {
+      "token": 67156310,
+      "type": "Assembly-CSharp.DiskTypeConnectionToken",
+      "name": "colorInitialized",
+      "fieldTypeName": "ReferenceHelper",
+      "signature": "Assembly-CSharp.ReferenceHelper Assembly-CSharp.DiskTypeConnectionToken::colorInitialized"
+    },
+    {
+      "token": 67115825,
+      "type": "Assembly-CSharp.ReferenceHelper",
+      "name": "messageCollection",
+      "fieldTypeName": "Int32",
+      "signature": "System.Int32 Assembly-CSharp.ReferenceHelper::messageCollection"
+    },
+    {
+      "token": 67129954,
+      "type": "Assembly-CSharp.NodeHelper",
+      "name": "keywordsID",
+      "fieldTypeName": "Int32",
+      "signature": "System.Int32 Assembly-CSharp.NodeHelper::keywordsID"
+    },
+    {
+      "token": 67129955,
+      "type": "Assembly-CSharp.NodeHelper",
+      "name": "keywordsID",
+      "fieldTypeName": "Vector3i",
+      "signature": "Vector3i Assembly-CSharp.NodeHelper::keywordsID"
+    },
+    {
+      "token": 67129959,
+      "type": "Assembly-CSharp.NodeHelper",
+      "name": "colorInitialized",
+      "fieldTypeName": "Int32",
+      "signature": "System.Int32 Assembly-CSharp.NodeHelper::colorInitialized"
+    },
+    {
+      "token": 67158050,
+      "type": "Assembly-CSharp.PcitureEditorConnectionToken",
+      "name": "colorInitialized",
+      "fieldTypeName": "UIInput",
+      "signature": "UIInput Assembly-CSharp.PcitureEditorConnectionToken::colorInitialized"
+    },
+    {
+      "token": 67115841,
+      "type": "Assembly-CSharp.ReferenceHelper",
+      "name": "firstMessage",
+      "fieldTypeName": "Vector3",
+      "signature": "UnityEngine.Vector3 Assembly-CSharp.ReferenceHelper::firstMessage"
+    },
+    {
+      "token": 67156305,
+      "type": "Assembly-CSharp.DiskTypeConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "World",
+      "signature": "World Assembly-CSharp.DiskTypeConnectionToken::keywordsID"
+    },
+    {
+      "token": 67156306,
+      "type": "Assembly-CSharp.DiskTypeConnectionToken",
+      "name": "colorInitialized",
+      "fieldTypeName": "Int32",
+      "signature": "System.Int32 Assembly-CSharp.DiskTypeConnectionToken::colorInitialized"
+    },
+    {
+      "token": 67158406,
+      "type": "Assembly-CSharp.RegistryTreeConnectionToken+EditorCollectionConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "FileTreeConnectionToken",
+      "signature": "Assembly-CSharp.FileTreeConnectionToken Assembly-CSharp.RegistryTreeConnectionToken/EditorCollectionConnectionToken::keywordsID"
+    },
+    {
+      "token": 67158407,
+      "type": "Assembly-CSharp.RegistryTreeConnectionToken+EditorCollectionConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "Boolean",
+      "signature": "System.Boolean Assembly-CSharp.RegistryTreeConnectionToken/EditorCollectionConnectionToken::keywordsID"
+    },
+    {
+      "token": 67158324,
+      "type": "Assembly-CSharp.FileTreeConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "String",
+      "signature": "System.String Assembly-CSharp.FileTreeConnectionToken::keywordsID"
+    },
+    {
+      "token": 67158043,
+      "type": "Assembly-CSharp.PcitureEditorConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "FileTreeConnectionToken",
+      "signature": "Assembly-CSharp.FileTreeConnectionToken Assembly-CSharp.PcitureEditorConnectionToken::keywordsID"
+    },
+    {
+      "token": 67153184,
+      "type": "Assembly-CSharp.FormSiteConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "FileTreeConnectionToken",
+      "signature": "Assembly-CSharp.FileTreeConnectionToken Assembly-CSharp.FormSiteConnectionToken::keywordsID"
+    },
+    {
+      "token": 67153189,
+      "type": "Assembly-CSharp.FormSiteConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "SolutionLayout",
+      "signature": "Assembly-CSharp.SolutionLayout Assembly-CSharp.FormSiteConnectionToken::keywordsID"
+    },
+    {
+      "token": 67153191,
+      "type": "Assembly-CSharp.FormSiteConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "Transform",
+      "signature": "UnityEngine.Transform Assembly-CSharp.FormSiteConnectionToken::keywordsID"
+    },
+    {
+      "token": 67158322,
+      "type": "Assembly-CSharp.FileTreeConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "Boolean",
+      "signature": "System.Boolean Assembly-CSharp.FileTreeConnectionToken::keywordsID"
+    },
+    {
+      "token": 67158323,
+      "type": "Assembly-CSharp.FileTreeConnectionToken",
+      "name": "colorInitialized",
+      "fieldTypeName": "Boolean",
+      "signature": "System.Boolean Assembly-CSharp.FileTreeConnectionToken::colorInitialized"
+    },
+    {
+      "token": 67158325,
+      "type": "Assembly-CSharp.FileTreeConnectionToken",
+      "name": "colorInitialized",
+      "fieldTypeName": "String",
+      "signature": "System.String Assembly-CSharp.FileTreeConnectionToken::colorInitialized"
+    },
+    {
+      "token": 67158326,
+      "type": "Assembly-CSharp.FileTreeConnectionToken",
+      "name": "messageCollection",
+      "fieldTypeName": "String",
+      "signature": "System.String Assembly-CSharp.FileTreeConnectionToken::messageCollection"
+    },
+    {
+      "token": 67158327,
+      "type": "Assembly-CSharp.FileTreeConnectionToken",
+      "name": "messageCollection",
+      "fieldTypeName": "Boolean",
+      "signature": "System.Boolean Assembly-CSharp.FileTreeConnectionToken::messageCollection"
+    },
+    {
+      "token": 67158328,
+      "type": "Assembly-CSharp.FileTreeConnectionToken",
+      "name": "valuesSet",
+      "fieldTypeName": "Boolean",
+      "signature": "System.Boolean Assembly-CSharp.FileTreeConnectionToken::valuesSet"
+    },
+    {
+      "token": 67158329,
+      "type": "Assembly-CSharp.FileTreeConnectionToken",
+      "name": "firstMessage",
+      "fieldTypeName": "Boolean",
+      "signature": "System.Boolean Assembly-CSharp.FileTreeConnectionToken::firstMessage"
+    },
+    {
+      "token": 67158330,
+      "type": "Assembly-CSharp.FileTreeConnectionToken",
+      "name": "variable",
+      "fieldTypeName": "Boolean",
+      "signature": "System.Boolean Assembly-CSharp.FileTreeConnectionToken::variable"
+    },
+    {
+      "token": 67158331,
+      "type": "Assembly-CSharp.FileTreeConnectionToken",
+      "name": "dataSet",
+      "fieldTypeName": "Boolean",
+      "signature": "System.Boolean Assembly-CSharp.FileTreeConnectionToken::dataSet"
+    },
+    {
+      "token": 67158332,
+      "type": "Assembly-CSharp.FileTreeConnectionToken",
+      "name": "keywordsLength",
+      "fieldTypeName": "Boolean",
+      "signature": "System.Boolean Assembly-CSharp.FileTreeConnectionToken::keywordsLength"
+    },
+    {
+      "token": 67158333,
+      "type": "Assembly-CSharp.FileTreeConnectionToken",
+      "name": "reasonDisposed",
+      "fieldTypeName": "Boolean",
+      "signature": "System.Boolean Assembly-CSharp.FileTreeConnectionToken::reasonDisposed"
+    },
+    {
+      "token": 67158334,
+      "type": "Assembly-CSharp.FileTreeConnectionToken",
+      "name": "versionInstance",
+      "fieldTypeName": "Boolean",
+      "signature": "System.Boolean Assembly-CSharp.FileTreeConnectionToken::versionInstance"
+    },
+    {
+      "token": 67135871,
+      "type": "Assembly-CSharp.PageSetConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "ConfigLayoutConnectionToken",
+      "signature": "Assembly-CSharp.PageSetConnectionToken/ConfigLayoutConnectionToken Assembly-CSharp.PageSetConnectionToken::keywordsID"
+    },
+    {
+      "token": 67158084,
+      "type": "Assembly-CSharp.PcitureEditorConnectionToken+GroupProviderConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "Int32",
+      "signature": "System.Int32 Assembly-CSharp.PcitureEditorConnectionToken/GroupProviderConnectionToken::keywordsID"
+    },
+    {
+      "token": 67158085,
+      "type": "Assembly-CSharp.PcitureEditorConnectionToken+GroupProviderConnectionToken",
+      "name": "colorInitialized",
+      "fieldTypeName": "Int32",
+      "signature": "System.Int32 Assembly-CSharp.PcitureEditorConnectionToken/GroupProviderConnectionToken::colorInitialized"
+    },
+    {
+      "token": 67158086,
+      "type": "Assembly-CSharp.PcitureEditorConnectionToken+GroupProviderConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "DeviceEventArgsConnectionToken",
+      "signature": "Assembly-CSharp.PcitureEditorConnectionToken/DeviceEventArgsConnectionToken Assembly-CSharp.PcitureEditorConnectionToken/GroupProviderConnectionToken::keywordsID"
+    },
+    {
+      "token": 67158087,
+      "type": "Assembly-CSharp.PcitureEditorConnectionToken+GroupProviderConnectionToken",
+      "name": "keywordsID",
+      "fieldTypeName": "PcitureEditorConnectionToken",
+      "signature": "Assembly-CSharp.PcitureEditorConnectionToken Assembly-CSharp.PcitureEditorConnectionToken/GroupProviderConnectionToken::keywordsID"
+    },
+    {
+      "token": 67130176,
+      "type": "Assembly-CSharp.ActionEditor",
+      "name": "keywordsID",
+      "fieldTypeName": "Int32",
+      "signature": "System.Int32 Assembly-CSharp.ActionEditor::keywordsID"
+    },
+    {
+      "token": 67129958,
+      "type": "Assembly-CSharp.NodeHelper",
+      "name": "keywordsID",
+      "fieldTypeName": "ActivatorFactory",
+      "signature": "Assembly-CSharp.ActivatorFactory Assembly-CSharp.NodeHelper::keywordsID"
+    },
+    {
+      "token": 67138581,
+      "type": "Vector3i",
+      "name": "x",
+      "fieldTypeName": "Int32",
+      "signature": "System.Int32 Vector3i::x"
+    },
+    {
+      "token": 67138582,
+      "type": "Vector3i",
+      "name": "y",
+      "fieldTypeName": "Int32",
+      "signature": "System.Int32 Vector3i::y"
+    },
+    {
+      "token": 67138583,
+      "type": "Vector3i",
+      "name": "z",
+      "fieldTypeName": "Int32",
+      "signature": "System.Int32 Vector3i::z"
+    },
+    {
+      "token": 67127848,
+      "type": "Assembly-CSharp.ActivatorFactory",
+      "name": "messageCollection",
+      "fieldTypeName": "Int32",
+      "signature": "System.Int32 Assembly-CSharp.ActivatorFactory::messageCollection"
+    },
+    {
+      "token": 67127849,
+      "type": "Assembly-CSharp.ActivatorFactory",
+      "name": "valuesSet",
+      "fieldTypeName": "Int32",
+      "signature": "System.Int32 Assembly-CSharp.ActivatorFactory::valuesSet"
+    },
+    {
+      "token": 67127850,
+      "type": "Assembly-CSharp.ActivatorFactory",
+      "name": "firstMessage",
+      "fieldTypeName": "Int32",
+      "signature": "System.Int32 Assembly-CSharp.ActivatorFactory::firstMessage"
+    },
+    {
+      "token": 67127889,
+      "type": "Assembly-CSharp.ActivatorFactory",
+      "name": "versionInstance",
+      "fieldTypeName": "Int32",
+      "signature": "System.Int32 Assembly-CSharp.ActivatorFactory::versionInstance"
+    },
+    {
+      "token": 67127887,
+      "type": "Assembly-CSharp.ActivatorFactory",
+      "name": "keywordsID",
+      "fieldTypeName": "ActionLayout",
+      "signature": "Assembly-CSharp.ActionLayout Assembly-CSharp.ActivatorFactory::keywordsID"
+    },
+    {
+      "token": 67127977,
+      "type": "Assembly-CSharp.ActionLayout",
+      "name": "colorInitialized",
+      "fieldTypeName": "Int32",
+      "signature": "System.Int32 Assembly-CSharp.ActionLayout::colorInitialized"
+    },
+    {
+      "token": 67127985,
+      "type": "Assembly-CSharp.ActionLayout",
+      "name": "keywordsID",
+      "fieldTypeName": "DatabaseToken",
+      "signature": "Assembly-CSharp.DatabaseToken Assembly-CSharp.ActionLayout::keywordsID"
+    },
+    {
+      "token": 67117348,
+      "type": "Assembly-CSharp.ProjectOptions",
+      "name": "keywordsID",
+      "fieldTypeName": "Int32",
+      "signature": "System.Int32 Assembly-CSharp.ProjectOptions::keywordsID"
+    },
+    {
+      "token": 67117349,
+      "type": "Assembly-CSharp.ProjectOptions",
+      "name": "keywordsID",
+      "fieldTypeName": "Vector3i",
+      "signature": "Vector3i Assembly-CSharp.ProjectOptions::keywordsID"
+    },
+    {
+      "token": 67116053,
+      "type": "Assembly-CSharp.MemoryHelper",
+      "name": "keywordsID",
+      "fieldTypeName": "String",
+      "signature": "System.String Assembly-CSharp.MemoryHelper::keywordsID"
+    },
+    {
+      "token": 67130170,
+      "type": "Assembly-CSharp.ActionEditor",
+      "name": "keywordsID",
+      "fieldTypeName": "UInt16",
+      "signature": "System.UInt16 Assembly-CSharp.ActionEditor::keywordsID"
+    },
+    {
+      "token": 67130175,
+      "type": "Assembly-CSharp.ActionEditor",
+      "name": "keywordsID",
+      "fieldTypeName": "UInt64",
+      "signature": "System.UInt64 Assembly-CSharp.ActionEditor::keywordsID"
+    }
+  ],
+  "moduleMvid": "462483cd-2f1f-4a24-9c83-46d24b1cb3f4"
+}
