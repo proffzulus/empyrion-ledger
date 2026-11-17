@@ -1,116 +1,47 @@
-# Empyrion Trade Ledger
+# Trade Ledger 1.0
 
-An in-game, client-side memory for **Empyrion - Galactic Survival / Reforged Eden 2**.
-Remember who sells what, who requested it, where you discovered a place and which
-personally observed devices may need attention. It does not play the game for you.
+**Version:** 1.0 (package 1.0.0; assemblies 1.0.0.0). Reference: Empyrion 1.20.1 build 5232 / RE2 Build 46. Made by **proffzulus**.
 
-**Version:** 1.0 (package 1.0.0; assemblies 1.0.0.0). Reference setup: Empyrion **1.20.1 build 5232**, **RE2 Build 46**,
-single player. Existing capture/device/marker fixes have user feedback; the latest
-UI/metadata changes have offline regression and package verification, not complete
-live Unity acceptance. Multiplayer is not certified.
+Client-side personal memory for Empyrion and Reforged Eden 2: actually observed markets, shown NPC requests, discovered places and deposits, and observed personal production devices. No autonomous trading, inventory actions or universe reveal.
 
-## What it does
+## Compatibility and release status
 
-- **Market / Locations / Comparison:** remember actually opened vendor offers in both
-  directions, price, stock/demand, location and observed freshness. Search/filter/sort,
-  compare observed prices and inspect an item's recipe/native properties. Historical
-  offers remain historical; unknown is never silently zero.
-- **Requests:** remember shown NPC requests and raw evidence, per-item inventory
-  progress, previously observed seller hints, reversible manual Done and narrowly
-  confirmed NPC hand-in completion. Backpack hand-in readiness is separate from
-  preparation stock. Repeated assignments retain distinct occurrence identities.
-- **Production:** remember discovered deposits and normally opened personal miners,
-  extractors and condensers; show observed stock, rate/fuel and conditional GAME-time
-  estimates. Service warnings use the earliest fuel/storage downtime below the
-  configurable hours horizon, not an independent fill-percent trigger.
-- **Destinations:** owned one-shot visit purposes and reusable trade routes, explicit
-  Mark/Show/Hide/Suppress/Force notify, compact Buy/Sell intent and safe reload
-  reconciliation. Route purchase deficits use fresh known demand and admitted current
-  inventory, without reserving stock or allocating purchases between sellers.
-- **Places:** browse actually discovered objects through system/group/body geography;
-  search known names/variants, filter faction/relation/trader potential, sort distance
-  or maximum potential traders, and organize Favorites / Unsorted / Hidden. Type
-  knowledge is distinct from actual observed wares or personnel.
-- **Item Browser:** active-game item/recipe metadata, pan/zoom recipe graphs with
-  compact overview, Market links and explicit framing controls.
-- Optional bounded **performance profiling**, OFF at startup and session-only opt-in.
+The native profile targets **Empyrion 1.20.1 build 5232**, Windows client, RE2 Build 46, single player. This public-name package has native-contract and offline regression coverage, not a new live-game acceptance run. This is the known reference image, not a universal build-number allowlist. Later build labels and moved metadata tokens are accepted when the feature contracts still match. Unique method renames in a proven owner require unchanged ABI and full IL/operand/local/exception behavior. Renamed owners/fields, ambiguous matches or changed semantics disable the affected capability; new obfuscation schemes may still require an update. Core API/Unity/SQLite and private-library integrity checks remain. Do not disable these checks. Unsupported optional reads remain unknown rather than empty or fresh.
 
-## Install and use
+This is preparation for distribution, not a Nexus upload. See RELEASE-NOTICES.md for redistribution permissions still requiring resolution. No EAC workaround is provided; use the game's supported client-mod setup.
 
-This repository publishes **source**, not game/scenario files or a prebuilt release.
-Build locally as described in [BUILDING](https://github.com/proffzulus/empyrion-ledger/blob/dev/docs/BUILDING.md). The generated ordinary
-mod folder is `artifacts/release/stage/TradeLedger`.
+Thanks to ravien_ff, Vermillion and contributors for [Reforged Eden 2](https://steamcommunity.com/sharedfiles/filedetails/?id=3143225812). Original Trade Ledger code/documentation are MIT-licensed; third-party/game/scenario rights remain separate in RELEASE-NOTICES.md and the included license notices.
 
-With Empyrion fully closed, install it under your game's `Content/Mods/TradeLedger`
-using the checked updater (see BUILDING). Do not keep a TradeLedgerProbeB loader
-beside TradeLedger. Upgrades preserve validated existing settings and save-local
-`Mods/TradeLedger` records. Unknown files or locks stop the updater; do not bypass it.
-There is no Nexus download link yet.
+## Installation and update
 
-Open/close with **`]` (RightBracket)**; Escape / Close dismiss. The native Escape-menu
-**Trade Ledger** entry has a guarded deferred handoff; actual visibility/click remains
-a user live check.
-Tabs begin Market, Requests, Production, Destinations. Observe a vendor/device normally;
-the journal is memory of what you actually see, not a list of unseen opportunities.
-Click resource cards to filter Devices. Relations use red Hostile, orange Unfriendly,
-yellow Neutral and green Friendly (Honored included); unknown and inapplicable remain
-separate. Explicit Suppress controls unwanted owned markers.
+1. Close Empyrion, including client/dedicated game processes. Do not install over loaded DLLs.
+2. For a new installation, place the **TradeLedger** folder in `<Empyrion>/Content/Mods/`. Its top-level loader is `TradeLedger.dll`, paired with `TradeLedger_Info.yaml` (`ModTargets: Client`). Keep the `runtime` subfolder intact. No separate application, source checkout or developer directory is required.
+3. To update an existing **TradeLedger** folder, keep your existing **TradeLedger.settings**; do not overwrite it with the ZIP defaults. Copy the other supplied files, including the runtime subfolder, into that same folder and replace matching package files.
+4. **Do not delete the existing mod folder.** Preserve its logs and any other personal files. Do not modify saves or caches. A file-in-use error means stop copying until the game is fully closed; do not force replacement.
 
-Places has compact relation/trader controls and direct Hide/Unhide and
-Favorite/Unfavorite with Undo, without switching lists. Its right panel contains
-Overview / Market / Requests for an exact POI or the selected body/sector/system.
-Full-view and Comparison links preserve scope; Back restores the panel. Locations
-uses the same four scope icons as Comparison.
+No installation script is included or required. Do not enable a legacy **TradeLedgerProbeB** loader alongside TradeLedger. Resolve a legacy prototype migration before adding another active loader; the steps above cover new installations and updates to the public TradeLedger folder.
 
-New-install defaults: `RuntimeObservation=on`, `Diagnostics=Warn`, Client targeting.
-Profiler is OFF at every process start; explicitly turn it on, reproduce, then off.
-Routine logs are mod-relative `logs/operational-v1`; optional bounded recordings are
-`logs/profiler-v1`. Never post private saves, full databases or raw recordings in a
-public issue. Diagnostics failing does not disable normal journal operation.
+New-install settings: passive `RuntimeObservation=on`, `Diagnostics=Warn`, Client targeting. Performance profiling is **OFF on every process start**, session-only opt-in through the journal's **Profile: Off/On** control; it also stops after its bounded duration/size budget. Press **`]` (RightBracket)** to open; Escape / Close dismiss. An Escape-menu Trade Ledger entry is also implemented, with paused-menu handoff covered offline; its actual visibility/click remains a user live check. Existing native-window switching remains supported by the guarded game bindings.
 
-## Boundaries and compatibility
+## Data and diagnostics
 
-Only admitted personal backpack, active personal/settled linked toolbar and supported
-visible cursor stock are read. This is **not** arbitrary open-container or complete
-linked-container inventory. Ambiguous transfers, stale scope and unsupported sources
-remain unknown. No item moves, automated purchases, hidden-world enumeration or
-unseen request creation. Forecasts assume unchanged operation and are not promises
-about unloaded/sleep/depletion behavior.
+Journal tabs begin **Market, Requests, Production, Destinations**. In Devices, coloured resource cards show filtered stock, device counts and per-product rates; click a resource to filter and click it again to clear. Places offers sortable Distance and Max traders, coloured relation dots and a relation filter (orange Unfriendly remains separate from Neutral). Unknown is not zero; N/A denotes a proven inapplicable faction relation. Item Browser has direct Fit graph / Center selected / Clear graph controls, with recipe and native item properties alongside the graph. Comparison's four scope icons choose POI, Body, Sector or System independently on each side.
 
-Build labels and whole-image hashes are provenance/fast paths, not universal refusal.
-Unknown images need independently validated feature/semantic contracts; compatible
-metadata shifts and unique behavior-identical same-owner method renames can resolve.
-Changed/ambiguous semantics fail closed per capability. This cannot guarantee every
-future build; optional failure must not disable independently valid stored-data UI.
+- Authoritative journal records are SQLite: `<current save>/Mods/TradeLedger/TradeLedger.sqlite`, with related Ledger metadata in that save-local directory. Updating only `Content/Mods/TradeLedger` does not remove those records. Keep the complete save-local directory when copying your own saves.
+- Deleting the installed mod folder would lose its `TradeLedger.settings` and local logs/profiler recordings, even though save-local journal data remains separate. Preserve those files during updates.
+- The existing game-adjacent private `Saves/TradeLedgerCache` supports safe publication/read mirrors outside native backup trees. It is runtime-managed, not a distributable database or an independent workspace.
+- Routine logs: `<mod>/logs/operational-v1/` (up to eight 2 MiB sessions / 16 MiB). Optional recordings: `<mod>/logs/profiler-v1/` (bounded recordings, up to 32 MiB retained). No source directory is used. If the mod directory is unwritable, diagnostics may fall back to `%LOCALAPPDATA%/TradeLedger/logs`; failure of logging does not disable Ledger.
+- To investigate a hitch: explicitly enable Profile, reproduce it, disable Profile, and retain the resulting log with the package fingerprint. Ledger timings do not prove a game-wide cause. Warn/Info/Debug diagnostics are independent; Debug is temporary troubleshooting.
+- A clean install has no historic legacy recovery input. Historical developer-workspace stores are neither imported nor redistributed. Never copy another player's records into a save to make a new installation appear populated.
 
-## Build, test and contribute
+## Dependencies and limits
 
-Windows, MSBuild with .NET Framework 4.6.1 targeting support, Python 3 and a legitimate
-compatible local Empyrion installation are required. Harmony is restored from its
-pinned official NuGet package and patched locally. No proprietary assemblies are in
-Git. See [BUILDING](https://github.com/proffzulus/empyrion-ledger/blob/dev/docs/BUILDING.md) and [CONTRIBUTING](https://github.com/proffzulus/empyrion-ledger/blob/dev/CONTRIBUTING.md).
+Requires the game's own ModApi/Mif/Unity/SQLite assemblies and native SQLite; these are **not included**. The package includes a reviewed modified Harmony 2.3.3 binary and its license/third-party notices. Do not substitute an arbitrary Harmony version. A conflicting loaded Harmony copy can disable optional observers safely.
 
-Public tests use synthetic fixtures and checked native contracts. Private development
-research, real session replays, saves, logs and player databases are deliberately absent.
-Offline/GDI previews are not live Unity validation. Contributions should preserve
-identity, observation scope, uncertainty and bounded work, and include focused tests.
+Inventory coverage remains admitted personal backpack, active personal/linked toolbar and supported visible cursor; it is not complete linked-container or arbitrary open-container access. Hand-in readiness is backpack-only. Historical prices/stock remain historical. Missing observations are unknown. Multiplayer, new public-folder loader startup and game save/load rendering need live validation; no multiplayer certification is claimed.
 
-## Thanks, credits and rights
+Next-launch checks after a compatible certified install: journal open/close and native-window switching; fresh vendor/device observation; low-reserve maintenance with the journal closed; request progress/Done; one-shot and route marker reload reconciliation; new offscreen deposit discovery. Launch the game yourself. Removing installation scripts does not establish that antivirus/VirusTotal warnings are resolved.
 
-Made by **proffzulus**. Original Trade Ledger code is **MIT licensed**,
-free to fork and contribute to, **as is and without warranty**; see [LICENSE](https://github.com/proffzulus/empyrion-ledger/blob/dev/LICENSE).
+Places also provides scoped Overview / Market / Requests in the right panel, compact relation/trader filters, direct Hide/Unhide and Favorite/Unfavorite with Undo. Select a geographic node for aggregate observations or a POI for exact-instance observations. Full-view and Comparison links preserve that scope; Back restores the panel. Locations uses the same four scope icons as Comparison.
 
-A tribute and sincere thank-you to **ravien_ff, Vermillion and the RE2 contributors**:
-[Reforged Eden 2](https://steamcommunity.com/sharedfiles/filedetails/?id=3143225812)
-is the world this journal was built to remember. Their official page permits use of
-configuration files such as yaml/ecf/epb and requests link credit. That is not a blanket
-MIT license for the scenario, its localization/dialogue CSV, art or other assets.
-
-Empyrion, Unity, Reforged Eden 2 and all game/third-party material remain the property
-of their respective rightsholders. MIT covers our original code, not their content.
-Essential structured runtime reference metadata is separately identified in
-[THIRD-PARTY-NOTICES](RELEASE-NOTICES.md); no raw scenario assets, game binaries,
-full dialogue/localization CSV, private observations or research outputs are bundled.
-Harmony/MonoMod/Cecil/Iced notices remain separate. No upstream endorsement is implied.
-
-Final 17 November polish: Places row clicks only focus details. The full checkbox cell toggles checks once. Hide/Favorite target only checked rows, or the visible cursor row when no checks exist; plain Hide/Unhide and Favorite/Unfavorite buttons use those targets. Filtering clears stale checks, and Undo restores exact membership without switching lists. Distance refresh replaces trusted player geography atomically instead of clearing it between polls; genuine unknown or changed scopes remain Unknown. Contextual Market uses one compact line per distinct offer, retaining freshness colours and hover explanations.
+Final 17 November polish: Places row clicks only focus details. The whole checkbox cell toggles checks once. Hide/Favorite act only on checked rows, or on the cursor row when no rows are checked; plain action labels preserve Undo and the current list. Same-context distance refresh replaces coordinates atomically, while genuinely unavailable evidence remains Unknown. Contextual Market uses single compact rows; freshness remains in colours and hover details, and distinct offers/prices stay separate.

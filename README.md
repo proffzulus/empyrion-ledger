@@ -41,10 +41,13 @@ This repository publishes **source**, not game/scenario files or a prebuilt rele
 Build locally as described in [BUILDING](docs/BUILDING.md). The generated ordinary
 mod folder is `artifacts/release/stage/TradeLedger`.
 
-With Empyrion fully closed, install it under your game's `Content/Mods/TradeLedger`
-using the checked updater (see BUILDING). Do not keep a TradeLedgerProbeB loader
-beside TradeLedger. Upgrades preserve validated existing settings and save-local
-`Mods/TradeLedger` records. Unknown files or locks stop the updater; do not bypass it.
+The user ZIP contains a manual-install mod folder and no PowerShell scripts.
+With the game fully closed, copy TradeLedger into Content/Mods. For updates,
+keep existing TradeLedger.settings and logs; replace only supplied package files.
+Save-local journal records remain in Mods/TradeLedger/TradeLedger.sqlite inside
+the current save. See [manual instructions](docs/release/README.md).
+Developer deployment scripts remain in source, outside the user ZIP.
+Do not enable both public and legacy ProbeB loaders.
 There is no Nexus download link yet.
 
 Open/close with **`]` (RightBracket)**; Escape / Close dismiss. The native Escape-menu

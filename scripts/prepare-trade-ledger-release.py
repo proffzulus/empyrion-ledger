@@ -39,7 +39,6 @@ def main():
  def archive(dest):
   with zipfile.ZipFile(dest,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=9) as z:
    entries={f'TradeLedger/{n}':STAGE/n for n in files+['build-manifest.json']}
-   entries['Install-TradeLedger.ps1']=ROOT/'scripts/deploy-trade-ledger.ps1'
    for name,path in sorted(entries.items()):
     i=zipfile.ZipInfo(name,(1980,1,1,0,0,0));i.compress_type=zipfile.ZIP_DEFLATED;i.external_attr=0o100644<<16;z.writestr(i,path.read_bytes(),compresslevel=9)
  if not a.check: archive(out)
@@ -48,8 +47,9 @@ def main():
  assert out.read_bytes()==memory.getvalue(),'archive not byte-reproducible'
  with zipfile.ZipFile(out) as z:
   assert z.testzip() is None
-  assert len(z.namelist())==11
- record={'status':'PREPARATION ONLY' if not release['nativeCertified'] else 'NATIVE CERTIFIED; LIVE UNITY UNVERIFIED','version':release['version']+'.0','target':release['target'],'archive':str(out.relative_to(ROOT)),'sha256':sha(out),'bytes':out.stat().st_size,'entries':11,'payload':release['files'],'manifestSha256':sha(STAGE/'build-manifest.json'),'deterministicZip':True,'personalPathScan':True,'publicationHolds':['broader binary/content redistribution review; see RELEASE-NOTICES.md']+([] if release['nativeCertified'] else ['native certification']),'installed':False}
+  assert len(z.namelist())==10
+  assert not any(n.lower().endswith('.ps1') for n in z.namelist()), 'scripts are not release payload'
+ record={'status':'PREPARATION ONLY' if not release['nativeCertified'] else 'NATIVE CERTIFIED; LIVE UNITY UNVERIFIED','version':release['version']+'.0','target':release['target'],'archive':str(out.relative_to(ROOT)),'sha256':sha(out),'bytes':out.stat().st_size,'entries':10,'payload':release['files'],'manifestSha256':sha(STAGE/'build-manifest.json'),'deterministicZip':True,'personalPathScan':True,'publicationHolds':['broader binary/content redistribution review; see RELEASE-NOTICES.md']+([] if release['nativeCertified'] else ['native certification']),'installed':False}
  (ROOT/'artifacts/release/verification/package-verification.json').write_text(json.dumps(record,indent=2)+'\n',encoding='utf-8')
  print(json.dumps(record,indent=2))
 if __name__=='__main__':main()
