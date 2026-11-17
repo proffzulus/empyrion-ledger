@@ -1,72 +1,67 @@
-# Rights, provenance and dependencies
+# Rights and bundled components
 
-`LICENSE` licenses original Trade Ledger code and original project documentation under
-MIT, copyright 2026 proffzulus. It does **not** relicense Empyrion,
-Reforged Eden 2, Unity or third-party content. All their rights are retained.
+Original Trade Ledger code and original project documentation are licensed under
+MIT, copyright 2026 proffzulus. This does not relicense Empyrion, Reforged Eden 2,
+Unity or third-party content. Their rights remain with their respective owners.
 
-## Empyrion and Reforged Eden 2
+## Game and scenario reference data
 
-Empyrion game/SDK/Unity/provider DLLs, native SQLite, prefabs, models, textures/icons,
-audio/video, configuration files, dialogue/localization CSV, saves and player data
-are not included. A legitimate local installation supplies build/runtime dependencies.
-No modified game binary is produced. Native interoperability tables contain member
-identities/signatures, semantic relationships and one-way hashes, not decompiled
-method bodies or copied executable IL.
+Thanks to **ravien_ff, Vermillion and contributors** for
+[Reforged Eden 2](https://steamcommunity.com/sharedfiles/filedetails/?id=3143225812).
+Their official page permits use of game configuration files such as yaml/ecf/epb
+and requests a link for credit. It separately reserves copyrighted assets; this is
+not an explicit blanket license for localization/dialogue CSV or an MIT grant.
 
-RE2 credit: **ravien_ff, Vermillion and contributors**,
-https://steamcommunity.com/sharedfiles/filedetails/?id=3143225812 . As inspected on
-2026-11-17, the official page permits use of game configuration files such as yaml,
-ecf and epb, asks link credit, and separately reserves rights in its copyrighted
-assets. This is not blanket permission or an MIT grant for localization/dialogue CSV.
+Trade Ledger includes derived reference metadata, not raw game/scenario assets or
+player records. These tables contain IDs, short labels, numeric relationships,
+source references/hashes and recognition rules, not full dialogue prose or raw
+CSV/config/prefab files. Their derived elements are outside Trade Ledger's MIT grant.
 
-The following **essential embedded runtime reference tables** are retained so this
-source builds the current implementation. They are a narrow exception to excluding
-private research outputs, not publication of a research catalogue/archive or live
-observations. Their game/scenario-derived elements are explicitly outside our MIT
-grant. They contain identifiers, short names/labels, factual numeric relationships,
-source hashes/references and authored recognition rules, **no full dialogue prose or
-raw CSV/config/prefab assets**. No independent asset ownership is asserted.
-
-| Runtime resource | Provenance / use |
+| Reference table | Origin and purpose |
 | --- | --- |
-| `Re2RequestDefinitions.json` | RE2 Build 46 Dialogues.ecf/CSV and item localization; shown-body hashes plus canonical item IDs/names, quantities, alternatives, conflict/source annotations. Matching only an actually shown page; never preload an assignment. |
-| `DiscoveredObjectTypes.json` | Selected locally audited authored template header/payload facts; names/IDs, hashes, structural type knowledge, potential trader identifiers/counts. Never spawned/discovered instances. |
-| `PlaceNameFamilies.json` | Effective installed RE2-over-base template precedence, localized short names, stable template families and authored potential trader counts. No actual staff/offers. |
-| `PlaceFactions.json` | RE2 Factions.ecf IDs/colours and localization short names; never imports default standings as current player relations. |
-| `NativeContracts5232.json`, `contract-5232.json`, `BuildContract5232.cs.txt` | Empyrion 1.20.1/5232 interoperability identities, signatures, ABI relationships and hash evidence; no game DLL or native implementation copied. |
+| Re2RequestDefinitions.json | RE2 Build 46 dialogue definitions/localization: shown-page hashes, canonical items, quantities, alternatives and source annotations. It recognizes actually shown requests, not unseen assignments. |
+| DiscoveredObjectTypes.json | Audited prefab header/payload facts: template names/IDs, structural hashes and potential trader/dialogue identifiers, not discovered instances or current contents. |
+| PlaceNameFamilies.json | Effective RE2-over-base template families, localized labels and potential trader counts, not live staff/offers. |
+| PlaceFactions.json | RE2 faction IDs/colors and localized names, not current player standings. |
+| NativeContracts.json (embedded) | Native member signatures, relationships and one-way behavior hashes for interoperability, not game implementations. Source inputs include NativeContracts5232.json, contract-5232.json and BuildContract5232.cs.txt. |
 
-These tables are pinned reference inputs, not a promise of automatic regeneration
-for arbitrary new scenario content. Runtime content/native guards retain unknowns or
-degrade unsupported features. Changes need review against legitimately installed
-files; do not copy raw third-party assets into this repository. Any broader content
-redistribution or future binary/Nexus publication needs its own rights review. This
-source publication does not claim those broader permissions.
+The mod does not bundle game/SDK/Unity/SQLite-provider assemblies, native SQLite,
+models, art, icons, audio, video, raw configuration, dialogue/localization CSV,
+saves or player databases. A legitimate game installation supplies those runtime
+libraries. No modified game assembly is distributed. Reference tables are pinned
+inputs; they do not guarantee support for arbitrary future scenario content.
+Credit and the project's MIT license do not themselves establish broader rights
+to redistribute game/scenario-derived material.
 
-## Harmony and bundled upstream components
+## Harmony and incorporated libraries
 
-No third-party DLL/package is tracked. `scripts/restore-dependencies.ps1` fetches the
-official Lib.Harmony 2.3.3 NuGet package over HTTPS and checks pinned SHA256, then
-`scripts/build-harmony-fieldtype-fix.ps1` reproduces the existing owned field-type
-matching correction. The original MIT notice and component notices are in
-`vendor/Harmony-2.3.3/LICENSE` and `THIRD-PARTY-LICENSES.txt` there. Keep them with
-any locally built binary distribution; no upstream endorsement or warranty.
+The release contains a locally modified **Harmony 2.3.3** by **Andreas Pardeike**
+([Harmony](https://github.com/pardeike/Harmony), MIT). Its merged code includes
+MonoMod Core/Utils/Backports/ILHelpers, Mono.Cecil (Mdb/Pdb/Rocks), Iced and
+System.ValueTuple 4.5.0 (assembly version 4.0.3.0). MonoMod's Linux/macOS native
+exception helpers are embedded in the same DLL.
 
-Harmony: Andreas Pardeike, https://github.com/pardeike/Harmony (MIT).
-The distributed `0Harmony.dll` merges MonoMod Core/Utils/Backports/ILHelpers,
-Mono.Cecil (including Mdb/Pdb/Rocks), Iced and System.ValueTuple. It also embeds
-MonoMod's Linux/macOS native exception helpers. Their upstream MIT license texts
-and attribution are retained in `THIRD-PARTY-LICENSES.txt`, including the
-.NET Foundation and Contributors notice from System.ValueTuple 4.5.0
-(merged assembly version 4.0.3.0). The broad informational third-party notices
-supplied by that NuGet package are also retained; they do not establish that
-every component listed there is bundled. The Core NuGet package's own
-`LICENSE.txt` is Iced's notice; MonoMod's separate project MIT license is
-identified explicitly. Game/Unity/SQLite dependencies are supplied externally,
-not bundled merely because the mod references them. The local patch affects only
-nongeneric field-type equality after name/declaring-type/kind checks; generic
-upstream behavior is retained. It modifies the owned dependency, not the game.
+Full upstream licenses and attribution are retained. System.ValueTuple's MIT notice
+credits the .NET Foundation and Contributors. Its package's broad informational
+third-party notices are also retained; this does not mean every component listed
+there is incorporated. MonoMod.Core's packaged LICENSE.txt is Iced's notice;
+MonoMod's shared project MIT license is identified separately.
 
-## Trade Ledger original code ? MIT
+The local Harmony correction checks nongeneric field-type equality after matching
+declaring type, name and member kind; generic upstream behavior is retained. This
+is a modified dependency, not an unmodified upstream release or a game modification.
+No upstream endorsement is implied.
+
+## License files in this package
+
+Harmony-LICENSE.txt and THIRD-PARTY-LICENSES.txt alongside this file contain the
+complete upstream license texts and modification notice. Keep them with the DLLs.
+They cover incorporated third-party components; Trade Ledger's own MIT terms below
+do not replace them. [Source and dependency provenance](https://github.com/proffzulus/empyrion-ledger/blob/dev/THIRD-PARTY-NOTICES.md)
+are available separately in the source repository; source scripts/vendor directories
+are not required files in the user ZIP.
+
+## Trade Ledger original code - MIT
 
 MIT License
 
