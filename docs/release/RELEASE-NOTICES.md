@@ -52,8 +52,17 @@ matching correction. The original MIT notice and component notices are in
 any locally built binary distribution; no upstream endorsement or warranty.
 
 Harmony: Andreas Pardeike, https://github.com/pardeike/Harmony (MIT).
-The merged package's MonoMod Core/Utils/Backports/ILHelpers, Mono.Cecil and Iced
-notices are preserved verbatim in that notice file. The local patch affects only
+The distributed `0Harmony.dll` merges MonoMod Core/Utils/Backports/ILHelpers,
+Mono.Cecil (including Mdb/Pdb/Rocks), Iced and System.ValueTuple. It also embeds
+MonoMod's Linux/macOS native exception helpers. Their upstream MIT license texts
+and attribution are retained in `THIRD-PARTY-LICENSES.txt`, including the
+.NET Foundation and Contributors notice from System.ValueTuple 4.5.0
+(merged assembly version 4.0.3.0). The broad informational third-party notices
+supplied by that NuGet package are also retained; they do not establish that
+every component listed there is bundled. The Core NuGet package's own
+`LICENSE.txt` is Iced's notice; MonoMod's separate project MIT license is
+identified explicitly. Game/Unity/SQLite dependencies are supplied externally,
+not bundled merely because the mod references them. The local patch affects only
 nongeneric field-type equality after name/declaring-type/kind checks; generic
 upstream behavior is retained. It modifies the owned dependency, not the game.
 

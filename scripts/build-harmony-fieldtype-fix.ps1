@@ -83,9 +83,11 @@ comparison for nongeneric declaring types after declaring-type/name/kind checks.
 Generic declaring types retain upstream behavior; generic collisions are not fixed.
 This prevents
 same-name, different-type fields being resolved to the first field during IL copy.
-No game DLL modified; no runtime Harmony patch, prefix or transpiler is installed.
+No game DLL modified. This dependency correction itself installs no runtime
+Harmony patch; Trade Ledger separately uses Harmony for its guarded observers.
 Reproduce with scripts/build-harmony-fieldtype-fix.ps1. This is a locally modified
-library, NOT an unmodified publisher binary. Current publication checks cover static contracts/offline builds; this is not a live-game acceptance claim.
+library, NOT an unmodified publisher binary. Compatibility must be verified
+for the supported game contracts; this notice makes no compatibility guarantee.
 '@
 [IO.File]::AppendAllText((Join-Path $folder 'THIRD-PARTY-LICENSES.txt'),$notice,(New-Object Text.UTF8Encoding($false)))
 $provenance=[ordered]@{basePackage='Lib.Harmony 2.3.3 lib/net452';baseSha256=(Get-FileHash -LiteralPath $original).Hash;localSha256=(Get-FileHash -LiteralPath $output).Hash;change='MonoMod.Utils.Extensions.Is nongeneric field-type equality after declaring type/name/kind; generic matching remains upstream';recipe='scripts/build-harmony-fieldtype-fix.ps1';runtimeGameValidation='NOT RUN';license='MIT with all original notices and local modification notice';signing='Original has no public key; no signature enforcement removed'}
